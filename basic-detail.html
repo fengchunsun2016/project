@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+
+  <link href="favicon.ico" type="image/x-icon" rel=icon>
+  <link rel="stylesheet" href="css/antd.min.css">
+  <link rel="stylesheet" href="css/reset.css">
+  <script src="js/react.production.min.js"></script>
+  <script src="js/react-dom.production.min.js"></script>
+  <script src="js/antd.min.js"></script>
+  <script src="js/browser.min.js"></script>
+  <style>
+    body {
+      background-color: #ececec;
+    }
+  </style>
+</head>
+<body>
+<div id="app"></div>
+<script type="text/babel">
+
+  const { Layout, Collapse, Button, Row, Col } = antd;
+  const { Content } = Layout;
+  const Panel = Collapse.Panel;
+
+  function callback(key) {
+    console.log(key);
+  }
+
+
+  class SumDetail extends React.Component {
+    constructor() {
+      super();
+      this.state = {
+        dataDetail : {}
+      }
+    }
+
+    return() {
+      window.history.go(-1);
+    }
+
+    componentDidMount() {
+      fetch('http://www.easy-mock.com/mock/5959bfe39adc231f356fa706/channel-mer-web/settlement/list')
+        .then(res=>res.json())
+        .then(data=> {
+          console.log(data, 'easy')
+        })
+    }
+
+    render() {
+      return (
+        <Content style={{ margin : '15px', height : '100vh-94px', minHeight : '400px' }}>
+          <div>
+            <Collapse defaultActiveKey={['1', '2', '3']} onChange={callback} style={{ lineHeight : '50px', fontSize : '16px' }}>
+              <Panel header="基本信息" key="1">
+                <Row>
+                  <Col span={6}>
+                    <span>商户名称：</span>
+                    <span>{}</span>
+                  </Col>
+                  <Col span={6}>
+                    <span>商户简称：</span>
+                    <span>{}</span>
+                  </Col>
+                  <Col span={6}>
+                    <span>商户模式：</span>
+                    <span>{}</span>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col span={6}>
+                    <span>机构：</span>
+                    <span>{}</span>
+                  </Col>
+                  <Col span={6}>
+                    <span>商户号：</span>
+                    <span>{}</span>
+                  </Col>
+                  <Col span={6}>
+                    <span>消息摘要方式：</span>
+                    <span>{}</span>
+                  </Col>
+                  <Col span={6}>
+                    <span>营业执照类型：</span>
+                    <span>{}</span>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col span={6}>
+                    <span>创建人：</span>
+                    <span>{}</span>
+                  </Col>
+                  <Col span={6}>
+                    <span>创建日期：</span>
+                    <span>{}</span>
+                  </Col>
+                  <Col span={6}>
+                    <span>状态：</span>
+                    <span>{}</span>
+                  </Col>
+                  <Col span={6}>
+                    <span>生效时间：</span>
+                    <span>{}</span>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col span={6}>
+                    <span>省份：</span>
+                    <span>{}</span>
+                  </Col>
+                  <Col span={6}>
+                    <span>市：</span>
+                    <span>{}</span>
+                  </Col>
+                  <Col span={6}>
+                    <span>区/县：</span>
+                    <span>{}</span>
+                  </Col>
+                  <Col span={6}>
+                    <span>经营年限：</span>
+                    <span>{}</span>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col span={6}>
+                    <span>详细地址：</span>
+                    <span>{}</span>
+                  </Col>
+                  <Col span={6}>
+                    <span>：</span>
+                    <span>{}</span>
+                  </Col>
+                  <Col span={6}>
+                    <span>邮编：</span>
+                    <span>{}</span>
+                  </Col>
+                  <Col span={6}>
+                    <span>商户网址：</span>
+                    <span>{}</span>
+                  </Col>
+                </Row>
+              </Panel>
+              <Panel header="营业执照信息" key="2"></Panel>
+              <Panel header="组织机构信息" key="3"></Panel>
+              <Panel header="组织机构图片" key="4"></Panel>
+              <Panel header="税务登记证" key="5"></Panel>
+              <Panel header="税务登记证图片" key="6"></Panel>
+              <Panel header="营业执照图片" key="7"></Panel>
+              <Panel header="开户许可证" key="8"></Panel>
+              <Panel header="开户许可证图片" key="9"></Panel>
+              <Panel header="法人身份证" key="10"></Panel>
+              <Panel header="法人身份证图片" key="11"></Panel>
+              <Panel header="结算信息" key="12"></Panel>
+              <Panel header="联系信息" key="13"></Panel>
+            </Collapse>
+            <div style={{ padding : '50px 0', textAlign : 'center', backgroundColor : '#fff' }}>
+              <Button type="primary" onClick={this.return}>返回</Button>
+            </div>
+          </div>
+
+        </Content>
+      )
+    }
+  }
+  ReactDOM.render(<SumDetail />, document.getElementById('app'));
+
+
+</script>
+</body>
+</html>

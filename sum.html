@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+
+  <link href="favicon.ico" type="image/x-icon" rel=icon>
+  <link rel="stylesheet" href="css/antd.min.css">
+  <link rel="stylesheet" href="css/reset.css">
+  <script src="js/react.production.min.js"></script>
+  <script src="js/react-dom.production.min.js"></script>
+  <script src="js/antd.min.js"></script>
+  <script src="js/moment-with-locales.min.js"></script>
+  <script src="js/browser.min.js"></script>
+  <style>
+    body{
+      background-color: #ececec;
+    }
+    .detail{
+      padding:3px 5px;
+      border-radius: 3px;
+      color:#fff;
+      cursor:pointer;
+      background-color:#00aeb9;
+    }
+  </style>
+</head>
+<body>
+<div id="app"></div>
+<script type="text/babel">
+  let clientWidth = document.documentElement.clientWidth || document.body.clientWidth;
+
+
+  const { Layout, Row, Col, Card, Form, Select, DatePicker, Radio, Input, Button, Table } = antd;
+  const { Content } = Layout;
+  const FormItem = Form.Item;
+  const Option = Select.Option;
+  const { RangePicker, MonthPicker } = DatePicker;
+  const RadioGroup = Radio.Group;
+
+  //全局设置日期选择为中文格式
+  moment.locale('zh-cn');
+
+  /*列表数据*/
+  const dataList = [{
+    key: '1',
+    count:'998',
+    successC:'998',
+    failC:'11',
+    closeC:'123',
+    amount:'123456',
+    successM:'123456',
+    failM:'123456',
+    closeM:'123456',
+  }, {
+    key: '2',
+    time:'2017-11-1',
+    payType:'支付宝',
+    count:'998',
+    successC:'998',
+    failC:'11',
+    closeC:'123',
+    amount:'123456',
+    successM:'123456',
+    failM:'123456',
+    closeM:'123456',
+  }, {
+    key: '2',
+    time:'2017-11-1',
+    payType:'支付宝',
+    count:'998',
+    successC:'998',
+    failC:'11',
+    closeC:'123',
+    amount:'123456',
+    successM:'123456',
+    failM:'123456',
+    closeM:'123456',
+  }, {
+    key: '2',
+    time:'2017-11-1',
+    payType:'支付宝',
+    count:'998',
+    successC:'998',
+    failC:'11',
+    closeC:'123',
+    amount:'123456',
+    successM:'123456',
+    failM:'123456',
+    closeM:'123456',
+  }];
+
+
+  class MyQuery extends React.Component{
+    constructor(props){
+      super(props);
+      this.state = {
+        //当前默认选中类型
+        requestType: 'month',
+        //startDate: moment(),
+        //endDate: moment(),
+        tableLoading: false,
+      }
+
+      this.requestTypeChange = this.requestTypeChange.bind(this);
+      this.exportSubmit = this.exportSubmit.bind(this);
+      this.handleSubmit = this.handleSubmit.bind(this);
+    }
+
+
+    //修改日期类型
+    requestTypeChange(e) {
+      let {value} = e.target;
+      console.log(value,this);
+      this.setState({
+        requestType:value
+      })
+    }
+
+    //不准选择日期
+    disabledDate(current) {
+      // Can not select days before today and today
+      return current && current.valueOf() > Date.now();
+    }
+
+    //根据日期类型选择空间
+    selectDate() {
+
+      let {startMonth, endMonth, startDay, endDay, requestType} = this.state;
+      const {getFieldDecorator} = this.props.form;
+
+      const rangeConfig = {
+        initialValue: [startDay?moment(startDay,'YYYY-MM-DD'):moment(), endDay?moment(endDay,'YYYY-MM-DD'):moment()],
+        rules: [{type: 'array', message: '请选择日期!'}],
+      }
+      const configStartMonth = {
+        initialValue: startMonth?moment(startMonth,'YYYY-MM'):moment(),
+        rules: [{type: 'object', message: '请选择日期!'}],
+      };
+      const configEndMonth = {
+        initialValue: endMonth?moment(endMonth,'YYYY-MM'):moment(),
+        rules: [{type: 'object', message: '请选择日期!'}],
+      };
+      if ('day' == requestType) {
+        return (
+          <FormItem
+            label="交易日期"
+          >
+
+            {getFieldDecorator('payDate', rangeConfig)(
+              <RangePicker
+                disabledDate={this.disabledDate}
+                ranges={{123: [moment(), moment()]}}
+                size="default"
+                style={{width: 200}}
+              />
+            )}
+
+          </FormItem>
+
+
+        )
+
+      }
+      if ('month' == requestType) {
+        return (
+          <span>
+          <FormItem
+            label="交易日期"
+          >
+            {getFieldDecorator('startDate', configStartMonth)(
+              <MonthPicker
+                size="default"
+                style={{width: 80}}
+
+                disabledDate={this.disabledDate}
+                placeholder="月份"
+              />
+            )}
+
+
+          </FormItem>
+          <FormItem>
+
+            {getFieldDecorator('endDate', configEndMonth)(
+              <MonthPicker
+                size="default"
+
+                style={{width: 80}}
+                disabledDate={this.disabledDate}
+                placeholder="月份"
+              />
+            )}
+
+          </FormItem>
+        </span>
+
+        )
+      }
+    }
+
+    //导出文件
+    exportSubmit() {
+      this.setState({
+        loading: true
+      });
+      let {onExport} = this.props;
+      //await onExport();
+      this.setState({
+        loading: false
+      });
+    }
+
+    //点击查询的回调
+    handleSubmit(e) {
+      e.preventDefault();
+      let {form, onQuery} = this.props;
+      form.validateFields((err, values) => {
+        console.log(err,values,'handleSubmit');
+       // onQuery(values);
+      });
+    }
+
+    //点击重置按钮
+    resetFields(){
+      const {form:{resetFields}} = this.props;
+      resetFields();
+    }
+
+    render(){
+      const { form:{getFieldDecorator} } = this.props;
+      const options = [1,2,3].map(item=>(<Option key={item}>{item}</Option>));
+
+      return(
+        <Form layout="inline" onSubmit={this.handleSubmit}>
+          <FormItem
+            label="支付种类"
+          >
+            {getFieldDecorator('payType', {
+              initialValue: 'all',
+            })(
+              <Select
+                size="default"
+                style={{width: 140}}
+                placeholder="选择支付种类"
+              >
+                <Option key='all'>全部</Option>
+                {options}
+              </Select>
+            )}
+          </FormItem>
+
+
+          {this.selectDate()}
+
+
+          <FormItem>
+            {getFieldDecorator('requestType', {
+              initialValue: 'month',
+            })(
+              <RadioGroup
+                onChange={this.requestTypeChange}
+                size="default"
+              >
+                <Radio value="month">月</Radio>
+                <Radio value="day">日</Radio>
+              </RadioGroup>
+            )}
+          </FormItem>
+          <br />
+          <FormItem style={{marginTop: 16}}>
+            <Button
+              size="default"
+              type="primary"
+              htmlType="submit"
+            >
+              查询
+            </Button>
+            <Button
+              style={{marginLeft: 8, background: '#00AA00'}}
+              type="primary"
+              size="default"
+              onClick={this.exportSubmit}
+              loading={this.state.loading}
+            >
+              导出
+            </Button>
+            <Button
+              size="default"
+              style={{marginLeft: 8}}
+              onClick={() => this.resetFields()}
+            >
+              重置
+            </Button>
+          </FormItem>
+        </Form>
+      )
+    }
+  }
+  const Query = Form.create()(MyQuery);
+
+  class Sum extends React.Component{
+    constructor(props){
+      super(props);
+      this.state = {
+        dataList,
+        loading: false,
+      }
+    }
+
+
+    render(){
+      console.log(this,'this.props')
+      console.log(window.history,'this.props')
+
+      const { visible, loading, dataDetail } = this.state;
+
+      const columns = [{
+        title: '序号',
+        render:(text, item, index) =>{
+          if(index==0){
+            return {
+              children: <div style={{textAlign:'center'}}>汇总</div>,
+              props: {
+                colSpan: 3,
+              },
+            }
+          }else {
+            return (
+              index
+            )
+          }
+        }
+      }, {
+        title: '交易日期',
+        dataIndex: 'time',
+        key: 'key',
+        render:(text, item, index) =>{
+          if(index==0){
+            return {
+              children: {text},
+              props: {
+                colSpan: 0,
+              },
+            }
+          }else{
+            return text
+          }
+        }
+      }, {
+        title: '支付种类',
+        dataIndex: 'payType',
+        key: 'key',
+        render:(text, item, index) =>{
+          if(index==0){
+            return {
+              children: {text},
+              props: {
+                colSpan: 0,
+              },
+            }
+          }else{
+            return text
+          }
+        }
+      }, {
+        title: '订单笔数',
+        dataIndex: 'count',
+        key: 'key',
+      }, {
+        title: '成功支付笔数',
+        dataIndex: 'successC',
+        key: 'key',
+      }, {
+        title: '失败支付笔数',
+        dataIndex: 'failC',
+        key: 'key',
+      }, {
+        title: '关闭支付笔数',
+        dataIndex: 'closeC',
+        key: 'key',
+      }, {
+        title: '订单金额',
+        dataIndex: 'amount',
+        key: 'key',
+      }, {
+        title: '成功支付金额',
+        dataIndex: 'successM',
+        key: 'key',
+      }, {
+        title: '失败支付金额',
+        dataIndex: 'failM',
+        key: 'key',
+      }, {
+        title: '关闭支付金额',
+        dataIndex: 'closeM',
+        key: 'key',
+      }, {
+        title: '操作',
+        render:(text, item, index) => (
+          <span className="detail">详情</span>
+        ),
+        onCellClick:(record, event)=>{
+          console.log(record, event);
+          parent.window.frames['mainFrame'].src = './sum-detail.html';
+        }
+      }];
+      const pagConfig = {
+        //total,
+        showTotal:total => `共 100 条`,
+        //current:page,
+        // pageSize:rows,
+        showSizeChanger:true,
+        pageSizeOptions:['10', '20', '50'],
+        /*onShowSizeChange(current, pageSize){
+         onShowSizeChange(current, pageSize)
+         },
+         onChange(page, pageSize){
+         onPageChange(page, pageSize)
+         }*/
+      }
+      return(
+        <Content style={{margin:'15px',height:'100vh-94px',minHeight:'400px'}}>
+          <Card>
+            <Query />
+          </Card>
+          <Card style={{marginTop:'15px'}}>
+            <Table
+              total={1000}
+              dataSource={dataList}
+              columns={columns}
+              size="middle"
+              loading={false}
+              pagination={pagConfig}
+              style={{whiteSpace : 'nowrap'}}
+              scroll={clientWidth&&clientWidth<1500?{x:1300}:{x:'100%'}}
+            />
+          </Card>
+        </Content>
+      )
+    }
+  }
+  ReactDOM.render( <Sum /> , document.getElementById('app'));
+</script>
+</body>
+</html>

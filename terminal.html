@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+
+  <link href="favicon.ico" type="image/x-icon" rel=icon>
+  <link rel="stylesheet" href="css/antd.min.css">
+  <link rel="stylesheet" href="css/reset.css">
+  <script src="js/react.production.min.js"></script>
+  <script src="js/react-dom.production.min.js"></script>
+  <script src="js/antd.min.js"></script>
+  <script src="js/moment-with-locales.min.js"></script>
+  <script src="js/browser.min.js"></script>
+  <style>
+    body{
+      background-color: #ececec;
+    }
+  </style>
+</head>
+<body>
+<div id="app"></div>
+<script type="text/babel">
+  let clientWidth = document.documentElement.clientWidth || document.body.clientWidth;
+
+
+  const { Layout, Row, Col, Card, Form, Select, Input, Button, Table } = antd;
+  const { Content } = Layout;
+  const FormItem = Form.Item;
+  const Option = Select.Option;
+
+  //全局设置日期选择为中文格式
+  moment.locale('zh-cn');
+
+  /*列表数据*/
+  const dataList = [{
+    key: '1',
+    number:'0012345698778565',
+    sn:'978756541233210',
+    status:'好',
+    date:'2017-11-06'
+  }];
+
+
+  class MyQuery extends React.Component{
+    constructor(props){
+      super(props);
+      this.state = {
+        tableLoading: false,
+      }
+
+      this.handleSubmit = this.handleSubmit.bind(this);
+      this.resetFields = this.resetFields.bind(this);
+    }
+
+    //点击查询的回调
+    handleSubmit(e) {
+      e.preventDefault();
+      let {form, onQuery} = this.props;
+      form.validateFields((err, values) => {
+        console.log(err,values,'handleSubmit');
+
+      });
+    }
+
+    //点击重置按钮
+    resetFields(){
+      const {form:{resetFields}} = this.props;
+      resetFields();
+    }
+
+
+    render(){
+      const { form:{getFieldDecorator} } = this.props;
+      const options = [1,2,3].map(item=>(<Option key={item}>{item}</Option>));
+
+      return(
+        <Form layout="inline" onSubmit={this.handleSubmit}>
+          <FormItem
+            label="终端编号"
+          >
+            {getFieldDecorator('aa', {
+              initialValue: '',
+            })(
+              <Input
+                style={{width:250}}
+              />
+            )}
+          </FormItem>
+          <FormItem
+            label="SN号"
+          >
+            {getFieldDecorator('bb', {
+              initialValue: '',
+            })(
+              <Input
+                style={{width:250}}
+              />
+            )}
+          </FormItem>
+          <FormItem
+            label="状态"
+          >
+            {getFieldDecorator('payType', {
+              initialValue: 'all',
+            })(
+              <Select
+                size="default"
+                style={{width: 140}}
+                placeholder="选择支付种类"
+              >
+                <Option key='all'>全部</Option>
+                {options}
+              </Select>
+            )}
+          </FormItem>
+
+          <FormItem>
+            <Button
+              size="default"
+              type="primary"
+              htmlType="submit"
+            >
+              查询
+            </Button>
+            <Button
+              size="default"
+              style={{marginLeft: 8}}
+              onClick={() => this.resetFields()}
+            >
+              重置
+            </Button>
+          </FormItem>
+        </Form>
+      )
+    }
+  }
+  const Query = Form.create()(MyQuery);
+
+  class Terminal extends React.Component{
+    constructor(props){
+      super(props);
+      this.state = {
+        dataList,
+        loading: false,
+      }
+    }
+
+
+    render(){
+
+      const { visible, loading, dataDetail } = this.state;
+
+      const columns = [{
+        title: '序号',
+        render:(text, item, index) =>{
+            return index+1
+        }
+      }, {
+        title: '终端编号',
+        dataIndex: 'number',
+        key: 'key',
+
+      }, {
+        title: 'SN号',
+        dataIndex: 'sn',
+        key: 'key',
+      }, {
+        title: '状态',
+        dataIndex: 'status',
+        key: 'key',
+      }, {
+        title: '绑定日期',
+        dataIndex: 'date',
+        key: 'key',
+      }, {
+        title: '操作',
+        render:(text, item, index) => (
+          <span style={{cursor:'pointer'}}>详情</span>
+        ),
+        onCellClick:(record, event)=>{
+          //console.log(record, event);
+          parent.window.frames['mainFrame'].src = './terminal-detail.html';
+        }
+      }];
+      const pagConfig = {
+        //total,
+        showTotal:total => `共 100 条`,
+        //current:page,
+        // pageSize:rows,
+        showSizeChanger:true,
+        pageSizeOptions:['10', '20', '50'],
+        /*onShowSizeChange(current, pageSize){
+         onShowSizeChange(current, pageSize)
+         },
+         onChange(page, pageSize){
+         onPageChange(page, pageSize)
+         }*/
+      }
+      return(
+        <Content style={{margin:'15px',height:'100vh-94px',minHeight:'400px'}}>
+          <Card>
+            <Query />
+          </Card>
+          <Card style={{marginTop:'15px'}}>
+            <Table
+              dataSource={dataList}
+              columns={columns}
+              size="middle"
+              loading={false}
+              pagination={pagConfig}
+              style={{whiteSpace : 'nowrap'}}
+              scroll={clientWidth&&clientWidth<1500?{x:1300}:{x:'100%'}}
+            />
+          </Card>
+        </Content>
+      )
+    }
+  }
+  ReactDOM.render( <Terminal /> , document.getElementById('app'));
+</script>
+</body>
+</html>

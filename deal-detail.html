@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+
+  <link href="favicon.ico" type="image/x-icon" rel=icon>
+  <link rel="stylesheet" href="css/antd.min.css">
+  <link rel="stylesheet" href="css/reset.css">
+  <script src="js/react.production.min.js"></script>
+  <script src="js/react-dom.production.min.js"></script>
+  <script src="js/antd.min.js"></script>
+  <script src="js/browser.min.js"></script>
+  <style>
+    body {
+      background-color: #ececec;
+    }
+  </style>
+</head>
+<body>
+<div id="app"></div>
+<script type="text/babel">
+
+  const { Layout, Collapse, Button, Row, Col, Icon } = antd;
+  const { Content } = Layout;
+  const Panel = Collapse.Panel;
+
+  function callback(key) {
+    console.log(key);
+  }
+
+
+  class SumDetail extends React.Component {
+    constructor() {
+      super();
+      this.state = {
+        dataDetail : {}
+      }
+    }
+
+    return() {
+      window.history.go(-1);
+    }
+
+    componentDidMount() {
+      fetch('http://www.easy-mock.com/mock/5959bfe39adc231f356fa706/channel-mer-web/settlement/list')
+        .then(res=>res.json())
+        .then(data=> {
+          console.log(data, 'easy')
+        })
+    }
+
+    render() {
+      return (
+        <Content style={{ margin : '15px', height : '100vh-94px', minHeight : '400px' }}>
+          <div>
+            <div style={{ lineHeight : '50px', fontSize : '16px' }}>
+              <Icon type="file-text" style={{color:'blue',marginRight:'10px'}}/>
+              详情
+            </div>
+            <Collapse defaultActiveKey={['1', '2', '3']} onChange={callback} style={{ lineHeight : '50px', fontSize : '16px' }}>
+              <Panel header="订单信息" key="1">
+                <Row>
+                  <Col span={6}>
+                    <span>商户订单号：</span>
+                    <span>{}</span>
+                  </Col>
+                  <Col span={6}>
+                    <span>支付状态：</span>
+                    <span>{}</span>
+                  </Col>
+                  <Col span={6}>
+                    <span>创建时间：</span>
+                    <span>{}</span>
+                  </Col>
+                  <Col span={6}>
+                    <span>结果时间：</span>
+                    <span>{}</span>
+                  </Col>
+                </Row>
+              </Panel>
+              <Panel header="商户信息" key="2">
+                <Row>
+                  <Col span={6}>
+                    <span>商户号：</span>
+                    <span>{}</span>
+                  </Col>
+                  <Col span={6}>
+                    <span>商户名称：</span>
+                    <span>{}</span>
+                  </Col>
+                  <Col span={6}>
+                    <span>支付种类：</span>
+                    <span>{}</span>
+                  </Col>
+                  <Col span={6}>
+                    <span>是否已退款：</span>
+                    <span>{}</span>
+                  </Col>
+                  <Col span={6}>
+                    <span>交易金额(元)：</span>
+                    <span>{}</span>
+                  </Col>
+                  <Col span={6}>
+                    <span>成功金额(元)：</span>
+                    <span>{}</span>
+                  </Col>
+                  <Col span={6}>
+                    <span>商户手续费(元)：</span>
+                    <span>{}</span>
+                  </Col>
+                </Row>
+              </Panel>
+              <Panel header="其他信息" key="3">
+                <div style={{marginRight:'30px'}}>
+                  <span style={{fontSize:'16px',fontWeight:'600'}}>备注：</span>
+                </div>
+              </Panel>
+            </Collapse>
+            <div style={{ padding : '50px 0', textAlign : 'center', backgroundColor : '#fff' }}>
+              <Button type="primary" onClick={this.return}>返回</Button>
+            </div>
+          </div>
+
+        </Content>
+      )
+    }
+  }
+  ReactDOM.render(<SumDetail />, document.getElementById('app'));
+
+
+</script>
+</body>
+</html>

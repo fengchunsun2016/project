@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+
+  <link href="favicon.ico" type="image/x-icon" rel=icon>
+  <link rel="stylesheet" href="css/antd.min.css">
+  <link rel="stylesheet" href="css/reset.css">
+  <script src="js/react.production.min.js"></script>
+  <script src="js/react-dom.production.min.js"></script>
+  <script src="js/antd.min.js"></script>
+  <script src="js/browser.min.js"></script>
+  <style>
+    body {
+      background-color: #ececec;
+    }
+  </style>
+</head>
+<body>
+<div id="app"></div>
+<script type="text/babel">
+
+  const { Layout, Button, Row, Col, Card, Icon } = antd;
+  const { Content } = Layout;
+
+
+  class SumDetail extends React.Component {
+    constructor() {
+      super();
+      this.state = {
+        dataDetail : {}
+      }
+    }
+
+    return() {
+      window.history.go(-1);
+    }
+
+    componentDidMount() {
+      fetch('http://www.easy-mock.com/mock/59fbf08b3e1c5652e5202c5e/merchant/terminal/detail')
+        .then(res=>res.json())
+        .then(data=> {
+          console.log(data, 'terminal/detail')
+          this.setState({
+            dataDetail:data.data
+          })
+        })
+    }
+
+    render() {
+      const {dataDetail} = this.state;
+      return (
+        <Content style={{ margin : '15px', height : '100vh-94px', minHeight : '400px', lineHeight:'40px',fontSize:'16px' }}>
+          <div>
+            <Icon type="database" style={{color:'#1a9fda',marginRight:'10px'}} />
+            终端详情
+          </div>
+          <Card style={{ fontSize:'16px' }}>
+            <Row>
+              <Col span={6}>
+                <span>商户号：</span><span>{dataDetail.merNumber}</span>
+              </Col>
+              <Col span={6}>
+                <span>商户名称：</span><span>{dataDetail.merName}</span>
+              </Col>
+            </Row>
+
+            <Row style={{marginTop:'50px'}}>
+              <Col span={6}>
+                <span>终端号：</span><span>{dataDetail.terminalNum}</span>
+              </Col>
+              <Col span={6}>
+                <span>批次号：</span><span>{dataDetail.pici}</span>
+              </Col>
+              <Col span={6}>
+                <span>SN号：</span><span>{dataDetail.sn}</span>
+              </Col>
+              <Col span={6}>
+                <span>sim号：</span><span>{dataDetail.sim}</span>
+              </Col>
+            </Row>
+
+            <Row>
+              <Col span={6}>
+                <span>生产厂商：</span><span>{dataDetail.terminalNum}</span>
+              </Col>
+              <Col span={6}>
+                <span>机具型号：</span><span>{dataDetail.pici}</span>
+              </Col>
+              <Col span={6}>
+                <span>终端类型：</span><span>{dataDetail.sn}</span>
+              </Col>
+            </Row>
+
+            <Row>
+              <Col span={6}>
+                <span>绑定状态：</span><span>{dataDetail.bindStatus}</span>
+              </Col>
+              <Col span={6}>
+                <span>绑定时间：</span><span>{dataDetail.bindTime}</span>
+              </Col>
+              <Col span={6}>
+                <span>终端主秘钥：</span><span>{dataDetail.terminalKey}</span>
+              </Col>
+            </Row>
+
+            <Row style={{marginTop:'50px'}}>
+              <Col span={6}>
+                <span>是否为故障机：</span><span>{dataDetail.fault}</span>
+              </Col>
+              <Col span={6}>
+                <span>是否已经丢失：</span><span>{dataDetail.lost}</span>
+              </Col>
+            </Row>
+
+          </Card>
+
+          <div style={{ padding : '100px 0 50px', textAlign : 'center', backgroundColor : '#fff' }}>
+            <Button type="primary" onClick={this.return}>返回</Button>
+          </div>
+
+
+        </Content>
+      )
+    }
+  }
+  ReactDOM.render(<SumDetail />, document.getElementById('app'));
+
+
+</script>
+</body>
+</html>

@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+
+  <link href="favicon.ico" type="image/x-icon" rel=icon>
+  <link rel="stylesheet" href="css/antd.min.css">
+  <link rel="stylesheet" href="css/reset.css">
+  <script src="js/react.production.min.js"></script>
+  <script src="js/react-dom.production.min.js"></script>
+  <script src="js/antd.min.js"></script>
+  <script src="js/browser.min.js"></script>
+  <style>
+    body{
+      background-color: #ececec;
+    }
+    .detail{
+      padding:3px 5px;
+      border-radius: 3px;
+      color:#fff;
+      cursor:pointer;
+      background-color:#00aeb9;
+    }
+  </style>
+</head>
+<body>
+<div id="app"></div>
+<script type="text/babel">
+
+  const { Layout, Row, Col, Card, Input, Table, Modal, Button } = antd;
+  const { Search } = Input;
+  const { Content } = Layout;
+
+  /*列表数据*/
+  const dataList = [{
+    key: '1',
+    title: '西湖区湖底公园1号',
+    name: '光头强',
+    time:'2017-11-1',
+    haveRead:'是',
+  }, {
+    key: '2',
+    title: '西湖区湖底公园1号',
+    name: '熊大',
+    time:'2017-11-1',
+    haveRead:'是',
+  }, {
+    key: '3',
+    title: '西湖区湖底公园1号',
+    name: '熊二',
+    time:'2017-11-1',
+    haveRead:'是',
+  }, {
+    key: '4',
+    title: '西湖区湖底公园1号',
+    name: '超哥',
+    time:'2017-11-1',
+    haveRead:'是',
+  }];
+
+  /*详情数据*/
+  const dataDetail = {
+    key: '1',
+    title: '西湖区湖底公园1号',
+    name: '光头强',
+    time:'2017-11-1',
+    content:'观自在菩萨，行深般若波罗蜜多时，照见五蕴皆空，度一切苦厄。舍利子，色不异空，空不异色，色即是空，空即是色，受想行识，亦复如是。舍利子，是诸法空相，不生不灭，不垢不净，不增不减。是故空中无色，无受想行识，无眼耳鼻舌身意，无色声香味触法，无眼界，乃至无意识界，无无明，亦无无明尽，乃至无老死，亦无老死尽。无苦集灭道，无智亦无得。以无所得故。菩提萨埵，依般若波罗蜜多故，心无挂碍。无挂碍故，无有恐怖，远离颠倒梦想，究竟涅槃。三世诸佛，依般若波罗蜜多故，得阿耨多罗三藐三菩提。故知般若波罗蜜多，是大神咒，是大明咒，是无上咒，是无等等咒，能除一切苦，真实不虚。故说般若波罗蜜多咒，即说咒曰：揭谛揭谛，波罗揭谛，波罗僧揭谛，菩提萨婆诃。'
+  };
+
+
+
+
+  let clientWidth = document.documentElement.clientWidth || document.body.clientWidth;
+
+  class System extends React.Component{
+    constructor(props){
+      super(props);
+      this.state = {
+        dataList,
+        dataDetail,
+        loading: false,
+        visible: false,
+      }
+      this.showModal = this.showModal.bind(this);
+      this.handleCancel = this.handleCancel.bind(this);
+      this.handleOk = this.handleOk.bind(this);
+    }
+    showModal (){
+      this.setState({
+        visible: true,
+      });
+    }
+    handleOk (){
+      this.setState({ loading: true });
+      setTimeout(() => {
+        this.setState({ loading: false, visible: false });
+      }, 2000);
+    }
+    handleCancel (){
+      this.setState({ visible: false });
+    }
+
+    render(){
+      const { visible, loading, dataDetail } = this.state;
+
+      const columns = [{
+        title: '序号',
+        render:(text, item, index) => (
+          index + 1
+        )
+      }, {
+        title: '公告标题',
+        dataIndex: 'title',
+        key: 'key',
+      }, {
+        title: '发布人',
+        dataIndex: 'name',
+        key: 'key',
+      }, {
+        title: '发布时间',
+        dataIndex: 'time',
+        key: 'key',
+      }, {
+        title: '是否已读',
+        dataIndex: 'haveRead',
+        key: 'key',
+      }, {
+        title: '操作',
+        render:(text, item, index) => (
+          <span className="detail">详情</span>
+        ),
+        onCellClick:(record, event)=>{
+          console.log(record, event)
+          this.setState({
+            visible:true
+          })
+        }
+      }];
+
+      const pagConfig = {
+        //total,
+        showTotal:total => `共 100 条`,
+        //current:page,
+       // pageSize:rows,
+        showSizeChanger:true,
+        pageSizeOptions:['10', '20', '50'],
+        /*onShowSizeChange(current, pageSize){
+          onShowSizeChange(current, pageSize)
+        },
+        onChange(page, pageSize){
+          onPageChange(page, pageSize)
+        }*/
+      }
+      return(
+        <Content style={{margin:'15px',height:'100vh-94px',minHeight:'400px'}}>
+          <Row style={{backgroundColor:'#ccc',padding:'30px 0'}}>
+            <Col span={8} offset={8}>
+              <Search
+                size="large"
+                placeholder="请输入要搜索的关键词"
+                style={{ width: '100%',height:'44px',lineHeight:'44px',fontSize:'16px' }}
+                onSearch={value => console.log(value)}
+              />
+            </Col>
+          </Row>
+          <Row style={{marginTop:'10px'}}>
+            <Card>
+              <Table
+                dataSource={dataList}
+                columns={columns}
+
+                size="middle"
+                loading={false}
+
+
+                pagination={pagConfig}
+
+                style={{whiteSpace : 'nowrap'}}
+                scroll={clientWidth&&clientWidth<1500?{x:1300}:{x:'100%'}}
+              />
+            </Card>
+          </Row>
+
+          <Modal
+            visible={visible}
+            title={dataDetail.title?dataDetail.title:''}
+            onOk={this.handleOk}
+            onCancel={this.handleCancel}
+            footer={[
+              <Button key="back" size="large" onClick={this.handleOk} loading={loading}>附件下载</Button>,
+              <Button key="load" size="large" onClick={this.handleCancel}>返回</Button>,
+            ]}
+            bodyStyle={{textIndent:'20px'}}
+          >
+            <Row  type="flex" justify="center" gutter={10}>
+              <Col><span>发布者：</span><span>{dataDetail.name?dataDetail.name:''}</span></Col>
+              <Col><span>发布时间：</span><span>{dataDetail.time?dataDetail.time:''}</span></Col>
+            </Row>
+            <div>
+              {dataDetail.content?dataDetail.content:''}
+            </div>
+
+          </Modal>
+        </Content>
+      )
+    }
+  }
+  ReactDOM.render( <System /> , document.getElementById('app'));
+</script>
+</body>
+</html>

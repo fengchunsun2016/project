@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+
+  <link href="favicon.ico" type="image/x-icon" rel=icon>
+  <link rel="stylesheet" href="css/antd.min.css">
+  <link rel="stylesheet" href="css/reset.css">
+  <script src="js/react.production.min.js"></script>
+  <script src="js/react-dom.production.min.js"></script>
+  <script src="js/antd.min.js"></script>
+  <script src="js/moment-with-locales.min.js"></script>
+  <script src="js/browser.min.js"></script>
+  <style>
+    body{
+      background-color: #ececec;
+    }
+    .detail{
+      padding:3px 5px;
+      border-radius: 3px;
+      color:#fff;
+      cursor:pointer;
+      background-color:#00aeb9;
+    }
+  </style>
+</head>
+<body>
+<div id="app"></div>
+<script type="text/babel">
+  let clientWidth = document.documentElement.clientWidth || document.body.clientWidth;
+
+
+  const { Layout, Row, Col, Card, Form, Select, DatePicker, Input, Button, Table, InputNumber, Icon } = antd;
+  const { Content } = Layout;
+  const FormItem = Form.Item;
+  const Option = Select.Option;
+  const { RangePicker } = DatePicker;
+
+  //全局设置日期选择为中文格式
+  moment.locale('zh-cn');
+
+
+  //form组件
+  class MyQuery extends React.Component{
+    constructor(props){
+      super(props);
+      this.state = {
+        dataList:[],
+        tableLoading: false,
+      }
+      this.exportSubmit = this.exportSubmit.bind(this);
+      this.handleSubmit = this.handleSubmit.bind(this);
+    }
+
+
+
+    //不准选择日期
+    disabledDate(current) {
+      // Can not select days before today and today
+      return current && current.valueOf() > Date.now();
+    }
+
+    //导出文件
+    exportSubmit() {
+      this.setState({
+        loading: true
+      });
+      let {onExport} = this.props;
+      //await onExport();
+      this.setState({
+        loading: false
+      });
+    }
+
+    //点击查询的回调
+    handleSubmit(e) {
+      e.preventDefault();
+      let {form, onQuery} = this.props;
+      form.validateFields((err, values) => {
+        console.log(err,values,'handleSubmit');
+        // onQuery(values);
+      });
+    }
+
+    //点击重置按钮
+    resetFields(){
+      const {form:{resetFields}} = this.props;
+      resetFields();
+    }
+
+    render(){
+      const { form:{getFieldDecorator} } = this.props;
+      const options = [1,2,3].map(item=>(<Option key={item}>{item}</Option>));
+
+      const rangeConfig = {
+        initialValue: [moment(), moment()],
+        rules: [{type: 'array', message: '请选择日期!'}],
+      }
+
+      return(
+        <Form layout="inline" onSubmit={this.handleSubmit}>
+          <Row>
+            <Col span={6}>
+              <FormItem
+                label="商户订单号"
+              >
+                {getFieldDecorator('order', {
+                  initialValue: '',
+                })(
+                  <Input
+                    style={{width:'250'}}
+                  />
+                )}
+              </FormItem>
+            </Col>
+            <Col span={5}>
+              <FormItem
+                label="支付种类"
+              >
+                {getFieldDecorator('payType', {
+                  initialValue: 'all',
+                })(
+                  <Select
+                    size="default"
+                    style={{width: 140}}
+                  >
+                    <Option key='all'>全部</Option>
+                    {options}
+                  </Select>
+                )}
+              </FormItem>
+            </Col>
+            <Col span={5}>
+              <FormItem
+                label="支付状态"
+              >
+                {getFieldDecorator('payStatus', {
+                  initialValue: 'all',
+                })(
+                  <Select
+                    size="default"
+                    style={{width: 140}}
+                  >
+                    <Option key='all'>全部</Option>
+                    {options}
+                  </Select>
+                )}
+              </FormItem>
+            </Col>
+            <Col span={8}>
+              <FormItem
+                label="交易金额"
+              >
+                {getFieldDecorator('minMoney', {
+                  initialValue: '0',
+                })(
+                  <InputNumber />
+                )}
+              </FormItem>
+              <span style={{position:'relative',top:'5px',left:'-13px'}}>--</span>
+              <FormItem>
+                {getFieldDecorator('maxMoney', {
+                  initialValue: '0',
+                })(
+                  <InputNumber />
+                )}
+              </FormItem>
+            </Col>
+
+          </Row>
+          <Row style={{marginTop: 16}}>
+            <Col span={7}>
+              <FormItem
+                label="交易日期"
+              >
+                {getFieldDecorator('payDate', rangeConfig)(
+                  <RangePicker
+                    disabledDate={this.disabledDate}
+                    ranges={{今天: [moment(), moment()]}}
+                    size="default"
+                    style={{width: 200}}
+                  />
+                )}
+              </FormItem>
+            </Col>
+            <Col>
+              <FormItem>
+                <Button
+                  size="default"
+                  type="primary"
+                  htmlType="submit"
+                >
+                  查询
+                </Button>
+                <Button
+                  style={{marginLeft: 8, background: '#00AA00'}}
+                  type="primary"
+                  size="default"
+                  loading={this.state.loading}
+                >
+                  统计
+                </Button>
+
+                <Button
+                  size="default"
+                  style={{marginLeft: 8}}
+                  onClick={() => this.resetFields()}
+                >
+                  重置
+                </Button>
+                <Button
+                  style={{marginLeft: 8, background: '#00AA00'}}
+                  type="primary"
+                  size="default"
+                  onClick={this.exportSubmit}
+                  loading={this.state.loading}
+                >
+                  导出
+                </Button>
+                <Button
+                  style={{marginLeft: 8, background: '#00AA00'}}
+                  type="primary"
+                  size="default"
+                  onClick={this.exportSubmit}
+                  loading={this.state.loading}
+                >
+                  对账文件下载
+                </Button>
+              </FormItem>
+            </Col>
+          </Row>
+
+        </Form>
+      )
+    }
+  }
+  const Query = Form.create()(MyQuery);
+  //完整组件
+  class Deal extends React.Component{
+    constructor(props){
+      super(props);
+      this.state = {
+        dataList:[],
+        loading: false,
+      }
+    }
+    componentDidMount(){
+      fetch('http://www.easy-mock.com/mock/59fbf08b3e1c5652e5202c5e/merchant/deal')
+        .then(res=>res.json())
+        .then(data=>{
+          console.log(data);
+          this.setState({
+            dataList:data.list
+          })
+        })
+    }
+
+
+    render(){
+
+      const { loading, dataList } = this.state;
+
+      const columns = [{
+        title: '序号',
+        render:(text, item, index) =>{
+          return (
+            index+1
+          )
+        }
+      }, {
+        title: '商户订单号',
+        dataIndex: 'order',
+        key: 'key',
+      }, {
+        title: '支付种类',
+        dataIndex: 'payType',
+        key: 'key',
+      }, {
+        title: '交易金额(元)',
+        dataIndex: 'amount',
+        key: 'key',
+      }, {
+        title: '商户手续费(元)',
+        dataIndex: 'charges',
+        key: 'key',
+      }, {
+        title: '支付状态',
+        dataIndex: 'status',
+        key: 'key',
+      }, {
+        title: '创建时间',
+        dataIndex: 'createTime',
+        key: 'key',
+      }, {
+        title: '订单金额',
+        dataIndex: 'amount',
+        key: 'key',
+      }, {
+        title: '操作',
+        render:(text, item, index) => (
+          <span className="detail">详情</span>
+        ),
+        onCellClick:(record, event)=>{
+          console.log(record, event);
+          parent.window.frames['mainFrame'].src = './deal-detail.html';
+        }
+      }];
+      const pagConfig = {
+        //total,
+        showTotal:total => `共 100 条`,
+        //current:page,
+        // pageSize:rows,
+        showSizeChanger:true,
+        pageSizeOptions:['10', '20', '50'],
+        /*onShowSizeChange(current, pageSize){
+         onShowSizeChange(current, pageSize)
+         },
+         onChange(page, pageSize){
+         onPageChange(page, pageSize)
+         }*/
+      }
+      return(
+        <Content style={{margin:'15px',height:'100vh-94px',minHeight:'400px'}}>
+          <Card>
+            <Query />
+          </Card>
+          <Card style={{margin:'15px 0'}}>
+            <Row style={{fontSize:'16px'}}>
+              <span style={{fontWeight:'600'}}>
+                <Icon type="appstore-o" style={{color:'#ffb218',marginRight:'5px'}}/>
+                总计
+              </span>
+              <span style={{margin:'0 20px'}}>
+                <span>交易金额：</span>
+                <span>{}</span>
+              </span>
+              <span style={{margin:'0 20px'}}>
+                <span>商户手续费：</span>
+                <span>{}</span>
+              </span>
+            </Row>
+          </Card>
+          <Card>
+            <Table
+              total={1000}
+              dataSource={dataList}
+              columns={columns}
+              size="middle"
+              loading={loading}
+              pagination={pagConfig}
+              style={{whiteSpace : 'nowrap'}}
+              scroll={clientWidth&&clientWidth<1500?{x:1300}:{x:'100%'}}
+            />
+          </Card>
+        </Content>
+      )
+    }
+  }
+  ReactDOM.render( <Deal /> , document.getElementById('app'));
+</script>
+</body>
+</html>
