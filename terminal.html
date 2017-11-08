@@ -16,6 +16,13 @@
     body{
       background-color: #ececec;
     }
+    .detail{
+      padding:3px 5px;
+      border-radius: 3px;
+      color:#fff;
+      cursor:pointer;
+      background-color:#00aeb9;
+    }
   </style>
 </head>
 <body>
@@ -142,14 +149,14 @@
       super(props);
       this.state = {
         dataList,
-        loading: false,
+        loading: false
       }
     }
 
 
     render(){
 
-      const { visible, loading, dataDetail } = this.state;
+      const { loading } = this.state;
 
       const columns = [{
         title: '序号',
@@ -176,7 +183,7 @@
       }, {
         title: '操作',
         render:(text, item, index) => (
-          <span style={{cursor:'pointer'}}>详情</span>
+          <span className="detail">详情</span>
         ),
         onCellClick:(record, event)=>{
           //console.log(record, event);
@@ -207,7 +214,7 @@
               dataSource={dataList}
               columns={columns}
               size="middle"
-              loading={false}
+              loading={loading}
               pagination={pagConfig}
               style={{whiteSpace : 'nowrap'}}
               scroll={clientWidth&&clientWidth<1500?{x:1300}:{x:'100%'}}

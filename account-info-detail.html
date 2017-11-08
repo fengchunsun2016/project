@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+
+  <link href="favicon.ico" type="image/x-icon" rel=icon>
+  <link rel="stylesheet" href="css/antd.min.css">
+  <link rel="stylesheet" href="css/reset.css">
+  <script src="js/react.production.min.js"></script>
+  <script src="js/react-dom.production.min.js"></script>
+  <script src="js/antd.min.js"></script>
+  <script src="js/browser.min.js"></script>
+  <style>
+    body {
+      background-color: #ececec;
+    }
+  </style>
+</head>
+<body>
+<div id="app"></div>
+<script type="text/babel">
+
+  const { Layout, Button, Row, Col, Icon, Card } = antd;
+  const { Content } = Layout;
+
+
+  class AccountInfoDetail extends React.Component {
+    constructor() {
+      super();
+      this.state = {
+        dataDetail : {}
+      }
+    }
+
+    return() {
+      window.history.go(-1);
+    }
+
+    componentDidMount() {
+      fetch('http://www.easy-mock.com/mock/5959bfe39adc231f356fa706/channel-mer-web/settlement/list')
+        .then(res=>res.json())
+        .then(data=> {
+          console.log(data, 'easy')
+        })
+    }
+
+    render() {
+      const {dataDetail} = this.state;
+      return (
+        <Content style={{ margin : '15px', height : '100vh-94px', minHeight : '400px' }}>
+          <Card style={{fontSize:'14px',lineHeight:'40px'}}>
+            <div style={{ lineHeight : '50px', fontSize : '16px',fontWeight:'600' }}>
+              <Icon type="file-text" style={{color:'blue',marginRight:'10px'}}/>
+              账户详情
+            </div>
+            <Row style={{marginLeft:'30px'}}>
+              <Col span={8}>
+                <span>交易号：</span>
+                <span>{}</span>
+              </Col>
+              <Col span={8}>
+                <span>交易类型：</span>
+                <span>{}</span>
+              </Col>
+              <Col span={8}>
+                <span>创建时间：</span>
+                <span>{}</span>
+              </Col>
+
+              <Col span={8}>
+                <span>发生额(元)：</span>
+                <span>{}</span>
+              </Col>
+              <Col span={10}>
+                <span>账户来源订单号：</span>
+                <span>{}</span>
+              </Col>
+
+              <Col span={8}>
+                <span>账户类型：</span>
+                <span>{}</span>
+              </Col>
+              <Col span={10}>
+                <span>发生额类型：</span>
+                <span>{}</span>
+              </Col>
+
+              <Col span={8}>
+                <span>备注：</span>
+                <span>{}</span>
+              </Col>
+            </Row>
+            <div style={{ padding : '50px 0', textAlign : 'center', backgroundColor : '#fff' }}>
+              <Button type="primary" onClick={this.return}>返回</Button>
+            </div>
+          </Card>
+        </Content>
+      )
+    }
+  }
+  ReactDOM.render(<AccountInfoDetail />, document.getElementById('app'));
+
+
+</script>
+</body>
+</html>

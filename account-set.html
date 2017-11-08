@@ -10,25 +10,121 @@
   <script src="js/react.production.min.js"></script>
   <script src="js/react-dom.production.min.js"></script>
   <script src="js/antd.min.js"></script>
+  <script src="js/moment-with-locales.min.js"></script>
   <script src="js/browser.min.js"></script>
+  <style>
+    body{
+      background-color: #ececec;
+    }
+    .detail{
+      padding:3px 5px;
+      border-radius: 3px;
+      color:#fff;
+      cursor:pointer;
+      background-color:#00aeb9;
+    }
+  </style>
 </head>
 <body>
-<div id="test"></div>
+<div id="app"></div>
 <script type="text/babel">
+  let clientWidth = document.documentElement.clientWidth || document.body.clientWidth;
 
-  const { Layout, Menu, Icon, Badge, Row, Col, Dropdown } = antd;
-  const { Header, Content, Footer, Sider } = Layout;
 
-  class Home extends React.Component{
+  const { Layout, Card, Table, Icon } = antd;
+  const { Content } = Layout;
+
+  //全局设置日期选择为中文格式
+  moment.locale('zh-cn');
+
+
+
+  //完整组件
+  class AccountSet extends React.Component{
+    constructor(props){
+      super(props);
+      this.state = {
+        dataList:[],
+        loading: false,
+      }
+    }
+    componentDidMount(){
+      fetch('http://www.easy-mock.com/mock/59fbf08b3e1c5652e5202c5e/merchant/deal')
+        .then(res=>res.json())
+        .then(data=>{
+          console.log(data);
+          this.setState({
+            dataList:data.list
+          })
+        })
+    }
+
+
     render(){
+
+      const { loading, dataList } = this.state;
+
+      const columns = [{
+        title: '序号',
+        render:(text, item, index) =>{
+          return (
+            index+1
+          )
+        }
+      }, {
+        title: '商户号',
+        dataIndex: 'order',
+        key: 'key',
+      }, {
+        title: '商户名称',
+        dataIndex: 'payType',
+        key: 'key',
+      }, {
+        title: '可用余额',
+        dataIndex: 'amount',
+        key: 'key',
+      }, {
+        title: '账户类型',
+        dataIndex: 'charges',
+        key: 'key',
+      }];
+      const pagConfig = {
+        //total,
+        showTotal:total => `共 100 条`,
+        //current:page,
+        // pageSize:rows,
+        showSizeChanger:true,
+        pageSizeOptions:['10', '20', '50'],
+        /*onShowSizeChange(current, pageSize){
+         onShowSizeChange(current, pageSize)
+         },
+         onChange(page, pageSize){
+         onPageChange(page, pageSize)
+         }*/
+      }
       return(
         <Content style={{margin:'15px',height:'100vh-94px',minHeight:'400px'}}>
-          账户管理
+          <Card>
+            <div style={{ lineHeight : '50px', fontSize : '16px',fontWeight:'600' }}>
+              <Icon type="file-text" style={{color:'blue',marginRight:'10px'}}/>
+              信息列表
+            </div>
+            <Table
+              total={1000}
+              dataSource={dataList}
+              columns={columns}
+              size="middle"
+              loading={loading}
+              pagination={pagConfig}
+              style={{whiteSpace : 'nowrap'}}
+              scroll={clientWidth&&clientWidth<1500?{x:1300}:{x:'100%'}}
+            />
+          </Card>
         </Content>
       )
     }
   }
-  ReactDOM.render( <Home/> , document.getElementById('test'));
+  ReactDOM.render( <AccountSet /> , document.getElementById('app'));
 </script>
 </body>
 </html>
