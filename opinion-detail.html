@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+
+  <link href="favicon.ico" type="image/x-icon" rel=icon>
+  <link rel="stylesheet" href="css/antd.min.css">
+  <link rel="stylesheet" href="css/reset.css">
+  <script src="js/react.production.min.js"></script>
+  <script src="js/react-dom.production.min.js"></script>
+  <script src="js/antd.min.js"></script>
+  <script src="js/browser.min.js"></script>
+  <style>
+    body {
+      background-color: #ececec;
+    }
+  </style>
+</head>
+<body>
+<div id="app"></div>
+<script type="text/babel">
+
+  const { Layout, Collapse, Button, Row, Col } = antd;
+  const { Content } = Layout;
+  const Panel = Collapse.Panel;
+
+  function callback(key) {
+    console.log(key);
+  }
+
+
+  class SettlementDetail extends React.Component {
+    constructor() {
+      super();
+      this.state = {
+        dataDetail : {}
+      }
+    }
+
+    return() {
+      window.history.go(-1);
+    }
+
+    componentDidMount() {
+      fetch('http://www.easy-mock.com/mock/5959bfe39adc231f356fa706/channel-mer-web/settlement/list')
+        .then(res=>res.json())
+        .then(data=> {
+          console.log(data, 'easy');
+          /*this.setState({
+
+           })*/
+        })
+    }
+
+    render() {
+      return (
+        <Content style={{ margin : '15px', height : '100vh-94px', minHeight : '400px' }}>
+          <div>
+            <Collapse defaultActiveKey={['1', '2', '3']} onChange={callback} style={{ lineHeight : '50px', fontSize : '16px' }}>
+              <Panel header="反馈信息" key="1">
+                <Row>
+                  <Col span={24}>
+                    <span>反馈订单号：</span>
+                    <span>{}</span>
+                  </Col>
+
+
+                  <Col span={6}>
+                    <span>商户号：</span>
+                    <span>{}</span>
+                  </Col>
+                  <Col span={6}>
+                    <span>反馈人：</span>
+                    <span>{}</span>
+                  </Col>
+                  <Col span={6}>
+                    <span>反馈人手机：</span>
+                    <span>{}</span>
+                  </Col>
+                  <Col span={6}>
+                    <span>反馈人邮箱：</span>
+                    <span>{}</span>
+                  </Col>
+
+                  <Col span={6}>
+                    <span>反馈时间：</span>
+                    <span>{}</span>
+                  </Col>
+                  <Col span={6}>
+                    <span>问题来源：</span>
+                    <span>{}</span>
+                  </Col>
+                  <Col span={6}>
+                    <span>问题级别：</span>
+                    <span>{}</span>
+                  </Col>
+                  <Col span={6}>
+                    <span>状态：</span>
+                    <span>{}</span>
+                  </Col>
+                </Row>
+              </Panel>
+              <Panel header="受理信息" key="2">
+                <Row>
+                  <Col span={6}>
+                    <span>受理人：</span>
+                    <span>{}</span>
+                  </Col>
+                  <Col span={6}>
+                    <span>手里时间：</span>
+                    <span>{}</span>
+                  </Col>
+                </Row>
+              </Panel>
+              <Panel header="处理信息" key="3">
+                <Row>
+                  <Col span={6}>
+                    <span>处理人：</span>
+                    <span>{}</span>
+                  </Col>
+                  <Col span={6}>
+                    <span>处理时间：</span>
+                    <span>{}</span>
+                  </Col>
+                  <Col span={6}>
+                    <span>处理方式：</span>
+                    <span>{}</span>
+                  </Col>
+
+                  <Col span={24}>
+                    <span>处理结果：</span>
+                    <span>如是我闻。一时佛在舍卫国。祗树给孤独园。与大比丘众。千二百五十人俱。尔时世尊。食时。著衣持钵。入舍卫大城乞食。于其城中。次第乞已。还至本处。饭食讫。收衣钵。洗足已。敷座而坐。</span>
+                  </Col>
+
+                </Row>
+              </Panel>
+            </Collapse>
+            <div style={{ padding : '50px 0', textAlign : 'center', backgroundColor : '#fff' }}>
+              <Button type="primary" onClick={this.return}>返回</Button>
+            </div>
+          </div>
+
+        </Content>
+      )
+    }
+  }
+  ReactDOM.render(<SettlementDetail />, document.getElementById('app'));
+
+
+</script>
+</body>
+</html>

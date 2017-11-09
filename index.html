@@ -29,7 +29,8 @@
           background : '#fff',
           paddingRight : 40,
           // textAlign:'center',
-          fontSize : 16
+          fontSize : 16,
+          borderBottom:'1px solid #ccc'
         },
         headItem : {
           margin : '0 20px'
@@ -52,8 +53,7 @@
           this.state = {
             selectedKey: './home.html',
             dataMenu: [],
-            data2: '',
-            data3: '',
+            dataNews:{}
           }
           this.onSelect = this.onSelect.bind(this);
         }
@@ -104,11 +104,25 @@
         constructor(props){
           super(props);
           this.state = {
-
+            dataNews:{}
           }
+        }
+        componentDidMount(){
+          setInterval(()=>{
+            fetch('http://www.easy-mock.com/mock/59fbf08b3e1c5652e5202c5e/merchant/news')
+              .then(res=>res.json())
+              .then(data=>{
+                console.log(data,'news');
+                this.setState({
+                  dataNews:data
+                })
+              })
+          },10000)
+
         }
 
         render(){
+          const {dataNews} = this.state;
 
           const menu = (
             <Menu>
@@ -127,12 +141,13 @@
             <Header style={styles.header}>
               <Row>
                 <Col span={10}>
+                  欢迎来到商户服务平台！
                 </Col>
                 <Col span={14}>
                 <Row type="flex" justify="end">
                   <Col style={styles.headItem}>
                   <a role="button" style={{ marginLeft : 10 }}>
-                    <Badge dot={true}>
+                    <Badge count={dataNews.message}>
                       <Icon type="question-circle" />
                       <span style={styles.menuText}>
                         工单
@@ -142,7 +157,7 @@
                   </Col>
                   <Col style={styles.headItem}>
                   <a role="button" style={{ marginLeft : 10 }}>
-                    <Badge dot={true}>
+                    <Badge count={dataNews.message}>
                       <Icon type="message" />
                       <span style={styles.menuText}>
                         消息
