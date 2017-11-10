@@ -170,7 +170,7 @@
 
           </Row>
           <Row style={{marginTop: 16}}>
-            <Col span={7}>
+            <Col span={9}>
               <FormItem
                 label="交易日期"
               >
@@ -179,7 +179,9 @@
                     disabledDate={this.disabledDate}
                     ranges={{今天: [moment(), moment()]}}
                     size="default"
-                    style={{width: 200}}
+                    showTime
+                    format="YYYY/MM/DD HH:mm:ss"
+                    style={{width: 280}}
                   />
                 )}
               </FormItem>

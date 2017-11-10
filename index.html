@@ -14,8 +14,9 @@
   <body>
     <div id="app"></div>
     <script type="text/babel">
-      const { Layout, Menu, Icon, Badge, Row, Col, Dropdown } = antd;
+      const { Layout, Menu, Icon, Badge, Row, Col, Dropdown, Tabs} = antd;
       const { Header, Footer, Sider } = Layout;
+      const TabPane = Tabs.TabPane;
 
       const styles = {
         arrow:{
@@ -108,7 +109,7 @@
           }
         }
         componentDidMount(){
-          setInterval(()=>{
+          this.timer = setInterval(()=>{
             fetch('http://www.easy-mock.com/mock/59fbf08b3e1c5652e5202c5e/merchant/news')
               .then(res=>res.json())
               .then(data=>{
@@ -119,6 +120,10 @@
               })
           },10000)
 
+        }
+
+        componentWillUnMount(){
+          clearInterval(this.timer);
         }
 
         render(){
@@ -181,6 +186,7 @@
       }
       //整体布局
       class MyLayout extends React.Component{
+
         render(){
           return(
             <Layout>
@@ -192,6 +198,7 @@
               </Sider>
               <Layout style={{ marginLeft: 200 }}>
                 <MyHeader />
+
                 <iframe id="mainFrame" src="./home.html"></iframe>
                 <Footer style={{ textAlign: 'center' }}>
                   Copyright &copy; 2017 北京亿联通付科技有限公司
