@@ -1,0 +1,138 @@
+body {
+    color: #000;
+}
+
+.card{
+    margin-top:60px;
+    padding:10px;
+    line-height: 40px;
+    font-size: 16px;
+    background-color:#fff;
+}
+
+.list {
+    margin-top: 20px;
+    background-color: #fff;
+}
+
+table, th {
+    text-align: center;
+}
+
+table th {
+    height: 50px;
+    line-height: 50px;
+}
+
+.top_nav .fa {
+    color: #3dc2c9;
+}
+
+.navigation-box{
+    margin-top:100px;
+}
+
+.select-pagination {
+    margin: 0 20px;
+    height: 32px;
+    line-height: 32px;
+}
+
+.select-pagination select {
+    height: 32px;
+    line-height: 32px;
+}
+
+.form-my-item{
+    margin-right:50px;
+}
+
+.query{
+    position:relative;
+    margin-top:60px;
+    padding:40px 20px;
+}
+
+.title-box{
+    position:relative;
+}
+.title-box .title-icon {
+    position: absolute;
+    top: 12px;
+    left: 8px;
+    width: 4px;
+    height: 16px;
+    border-radius: 2px;
+    background-color: #00CCFF;
+}
+
+.title-box .title-text {
+    margin-left:16px;
+    line-height: 40px;
+    font-size: 20px;
+}
+
+.inline-block{
+    display:inline-block;
+    margin-left:20px;
+}
+
+
+
+/*首页*/
+.mer-title-box .mer-title-icon {
+    position: absolute;
+    top: 23px;
+    left: 8px;
+    width: 4px;
+    height: 16px;
+    border-radius: 2px;
+    background-color: #00CCFF;
+}
+
+.mer-title-box .mer-title-text {
+    line-height: 40px;
+    font-size: 20px;
+}
+.x_panel .mer-info {
+    margin-top: 50px;
+    line-height: 40px;
+    font-size: 16px;
+}
+
+/*系统公告*/
+.search-box {
+    margin-top: 48px;
+    padding: 40px 0;
+    background-color: #46eeee;
+}
+
+.search-input {
+    border-radius: 5px 0 0 5px;
+    height: 50px;
+    line-height: 50px;
+}
+
+.search-button {
+    border-radius: 0 5px 5px 0;
+    height: 50px;
+    line-height: 50px;
+}
+
+.search-button i {
+    font-size: 28px;
+}
+
+/*支付授权*/
+.authorization-basic{
+    padding-left:40px;
+}
+.authorization-info{
+    padding-left:40px;
+    line-height:40px;
+}
+
+
+
+
+
