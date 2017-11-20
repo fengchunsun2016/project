@@ -14,7 +14,8 @@
   <body>
     <div id="app"></div>
     <script type="text/babel">
-      const { Layout, Menu, Icon, Badge, Row, Col, Dropdown, Tabs} = antd;
+      const { Layout, Menu, Icon, Badge, Row, Col, Dropdown, Tabs, Modal, Button, Form, Input} = antd;
+      const FormItem = Form.Item;
       const { Header, Footer, Sider } = Layout;
       const TabPane = Tabs.TabPane;
 
@@ -77,8 +78,9 @@
           })
         }
 
+        //左侧菜单被选中时触发（选中后点击无效）
         onSelect({ item, key }){
-          console.log(item,key,'onSelect')
+         // console.log(item,key,'onSelect')
           const {add,isHave} = this.props;
 
           let obj = this.state.dataMenu.find((item)=>item.path==key);
@@ -89,6 +91,7 @@
             selectedKey:key
           })
         }
+        //点击左侧菜单时触发
         onClick({ item, key }){
           console.log(item,key,'onClick');
           const {isHave} = this.props;
@@ -98,7 +101,6 @@
         }
 
         render(){
-          console.log(this.state,this.props.activeKey,'3333333333333');
 
           const {dataMenu} = this.state;
           return(
@@ -122,14 +124,97 @@
         )
         }
       }
+
+      //修改交易密码form框
+      class MyDealQuery extends React.Component{
+        constructor(){
+          super();
+          this.state = {
+
+          }
+          this.handleSubmit = this.handleSubmit.bind(this);
+        }
+        handleSubmit(e){
+          const { handleOk } = this.props;
+          e.preventDefault();
+          this.props.form.validateFields((err, values) => {
+            if (!err) {
+              console.log('提交的数据: ', values);
+              handleOk();
+            }
+          });
+        }
+
+        render(){
+          const { form:{getFieldDecorator}, handleOk, handleCancel } = this.props;
+          return(
+            <Form onSubmit={this.handleSubmit} className="login-form">
+              <FormItem
+                label="旧密码"
+              >
+                {getFieldDecorator('oldPassword', {
+                  rules: [{ required: true, message: '请输入旧密码' }],
+                })(
+                  <Input
+                    type="password"
+                    prefix={<Icon type="lock" />}
+                    placeholder="请输入旧密码"
+                    style={{width:250}} />
+                )}
+              </FormItem>
+              <FormItem
+                label="新密码"
+              >
+                {getFieldDecorator('newPasswordOne', {
+                  rules: [{ required: true, message: '请输入新密码' }],
+                })(
+                  <Input
+                    prefix={<Icon type="lock" />}
+                    type="password"
+                    placeholder="请输入新密码"
+                    style={{width:250}} />
+                )}
+              </FormItem>
+              <FormItem
+                label="新密码"
+              >
+                {getFieldDecorator('newPasswordTwo', {
+                  rules: [{ required: true, message: '请再次输入新密码' }],
+                })(
+                  <Input
+                    prefix={<Icon type="lock" />}
+                    placeholder="请再次输入新密码"
+                    type="password"
+                    style={{width:250}} />
+                )}
+              </FormItem>
+              <FormItem>
+                <Button type="default" className="login-form-button" style={{margin:'0 20px 0 40px'}} onClick={handleCancel}>
+                  取消
+                </Button>
+                <Button type="primary" htmlType="submit" className="login-form-button" >
+                  提交
+                </Button>
+              </FormItem>
+            </Form>
+          )
+        }
+      }
+      const DealQuery = Form.create()(MyDealQuery);
       //布局头部
       class MyHeader extends React.Component{
 
         constructor(props){
           super(props);
           this.state = {
-            dataNews:{}
+            dataNews:{},
+            visible:false,
+            loading:false
           }
+          this.onClick = this.onClick.bind(this);
+          this.showModal = this.showModal.bind(this);
+          this.handleOk = this.handleOk.bind(this);
+          this.handleCancel = this.handleCancel.bind(this);
         }
         componentDidMount(){
           this.timer = setInterval(()=>{
@@ -149,11 +234,37 @@
           clearInterval(this.timer);
         }
 
+        onClick({ item, key, keyPath }){
+          //console.log( item, key, keyPath,'aaaaaaaaaaaaa' )
+          if(key==3){
+            location.href='./login.html'
+          }else if(key==2){
+            this.showModal();
+          }else if(key==1){
+            this.showModal();
+          }
+        }
+
+        showModal(){
+          this.setState({
+            visible: true,
+          });
+        }
+        handleOk(){
+          this.setState({ loading: true });
+          setTimeout(() => {
+            this.setState({ loading: false, visible: false });
+          }, 3000);
+        }
+        handleCancel(){
+          this.setState({ visible: false });
+        }
+
         render(){
-          const {dataNews} = this.state;
+          const { dataNews, visible, loading } = this.state;
 
           const menu = (
-            <Menu>
+            <Menu onClick={this.onClick}>
               <Menu.Item key="1">
                 <Icon type="setting" style={styles.personalIcon} /> 修改登录密码
               </Menu.Item>
@@ -203,6 +314,18 @@
                 </Row>
                 </Col>
               </Row>
+
+              <Modal
+                visible={visible}
+                title="修改交易密码"
+                onOk={this.handleOk}
+                onCancel={this.handleCancel}
+                footer={null}
+                maskClosable={false}
+                bodyStyle={{display:'flex',justifyContent:'center',AlignItems:'center'}}
+              >
+                <DealQuery handleOk={this.handleOk} handleCancel={this.handleCancel} />
+              </Modal>
             </Header>
           )
         }
@@ -261,6 +384,8 @@
           }
           this.setState({ panes, activeKey });
         }
+
+        //点击左侧菜单时先查询是否已经打开，返回true/false
         isHave(key){
           return this.state.panes.some((item)=>{return key==item.key})
         }
