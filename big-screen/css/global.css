@@ -1,0 +1,47 @@
+@charset "utf-8";
+/* CSS Document */
+/*
+color:red !important;/* Firefox、IE7支持 
+_color:red;  IE6支持 
+*color:red;  IE6、IE7支持 
+*+color:red; IE7支持/
+color:red\9; IE6、IE7、IE8支持 
+color:red\0; IE8支持
+@media screen and(-webkit-min-device-pixel-ratio:0){} chrome
+filter:progid:DXImageTransform.Microsoft.Gradient(GradientType=0, StartColorStr='#99000000', EndColorStr='#99000000');
+_filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='/templets/ftwcm/images/bg_index.body1.png');_background:none;
+_top:expression(eval(document.documentElement.scrollTop+document.documentElement.clientHeight*0.3));
+behavior:url('');
+pointer-events:none;//鼠标穿透
+-webkit-animation:0.3s ease-in 1.1s 1 ui;
+-webkit-animation-fill-mode:both;
+-webkit-appearance:none;
+*/
+
+
+/*--默认--*/
+html, body, div, span, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, address, big, cite, code, del, em, font, img, ins, small, strong, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend {margin:0;padding:0;}
+html{_background-image:url(about:blank);_background-attachment:fixed;}
+body{-webkit-text-size-adjust:none;font-family:微软雅黑,'Heiti SC',黑体,Arial;font-size:12px;}
+ol,ul,li{list-style:none outside none;padding:0;}
+a{text-decoration:none;color:#707070;}
+a:hover{color:#666;}
+img{border:none;vertical-align:middle;}
+table{border-collapse:collapse;}
+tr,td,th{padding:0;margin:0;}
+h1,h2,h3,h4,h5,h6{font-weight:normal;color:#474747;}
+h1 a,h2 a,h3 a,h4 a,h5 a,h6 a{color:#474747;}
+i,b,strong{font-style:normal;font-weight:normal;}
+input,textarea,select{padding:0;border:1px solid #CCC;font-family:微软雅黑,'Heiti SC',黑体,Arial;}
+a{ text-decoration:none;}
+a { outline:none;} /*解决超链接虚线框*/
+area {blr:expression_r(this.onFocus=this.blur())} /*解决图片虚线框*/
+*:focus {outline: none;}
+
+.clear:after{ content:"";  height:0px; visibility:hidden; display:block; clear:both;}
+.clear{*zoom:1;}
+.fl{ float: left;}
+.fr{ float: right;}
+
+
+

@@ -1,0 +1,392 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="description" content="" />
+  <meta name="keywords" content="" />
+
+  <title>聚融通生态数据平台</title>
+  <link href="css/global.css" rel="stylesheet" type="text/css" />
+  <link href="css/gzl.css" rel="stylesheet" type="text/css" />
+  <script type="text/javascript" src="js/jquery-2.2.3.min.js"></script>
+  <script type="text/javascript" src="js/common.js"></script>
+  <script type="text/javascript" src="js/echarts-all.js"></script>
+  <style type="text/css">
+    body{ background: #192242;}
+  </style>
+</head>
+<body>
+<div class="main clear">
+  <div class="part1 fl">
+    <p class="title">聚融通生态数据平台</p>
+    <div class="content">
+      <div class="today">
+        <h3 class="total">今日平台总交易</h3>
+        <div  class="sum"><span id="numTxt" data-time="2" data-value="29804299.00">29804299.00</span>元</div>
+      </div>
+      <div class="today">
+        <h3 class="total">今日平台总交易</h3>
+        <span class="sum">11564068笔</span>
+      </div>
+      <div class="plant-sum"><span>平台总交易额</span><span class="num">29,804,299.00元</span></div>
+      <div class="plant-sum"><span>平台总交易笔</span><span class="num">11,564,068笔</span></div>
+    </div>
+    <h2 class="plat-today">今日平台交易</h2>
+
+    <div id="leftplat" class="leftplat"></div>
+
+  </div>
+  <div class="part2 fr">
+    <h2 class="title">最近30天支付渠道占比</h2>
+    <div class="pie" style="display: flex; ">
+      <div id="partner"  class="fl" style="justify-content: center; align-items: center; flex: 1; "></div>
+      <div  id="pay" class="fr"  style="justify-content: center; align-items: center; flex: 1;"></div>
+    </div>
+
+    <script type="text/javascript">
+
+      var pie=function (config){
+        // 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById(config.id));
+        // 指定图表的配置项和数据
+        option = {
+          tooltip : {
+            trigger: 'item',
+            formatter: "{b} : {c}万 "
+          },
+          legend: {
+            orient : 'vertical',
+            fontFamily:'Microsoft Yahei',
+            itemGap:10 ,
+            textStyle:{ color:'#fff',fontSize:12},
+            x : 'left',
+            data:config.legend
+          },
+          color:config.color,
+          calculable : false,
+          series : [
+            {
+              type:'pie',
+              radius : [config.rdx,config.rdy],
+              center: [config.cx,config.cy],
+              itemStyle : {
+                normal : {
+                  label : {
+                    show : true,
+                    formatter: "{b} : {c}万 "
+                  }
+                },
+                lineStyle:{color:'#2e57ec'},
+              },
+              data:config.data
+            }
+          ]
+        };
+
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
+      };
+
+
+
+      pie({
+        id:'partner',
+        rdx:'15%',
+        rdy:'45%',
+        cx:'50%',
+        cy:'50%',
+        legend:[{name:'江苏聚合',icon:'bar'},{name:'威福通',icon:'bar'},{name:'商银行',icon:'bar'}],
+        color:['#e8eaf0', '#03c1ab','#2e57ec'],
+        data:[
+          {value:924, name:'江苏聚合'},
+          {value:2056, name:'威福通'},
+          {value:10000, name:'商银行'}
+        ]
+      });
+      pie({
+        id:'pay',
+        rdx:'15%',
+        rdy:'45%',
+        cx:'50%',
+        cy:'50%',
+        legend:[{name:'微信扫码',icon:'bar'},{name:'微信H5',icon:'bar'},{name:'支付宝扫码',icon:'bar'},{name:'支付宝H5',icon:'bar'},{name:'网银',icon:'bar'}],
+        color:['#2e57ec', '#e8eaf0','#0fbfef','#5c6898','#03c1ab'],
+        data:[
+          {value:613, name:'微信扫码'},
+          {value:543, name:'微信H5'},
+          {value:668, name:'支付宝扫码'},
+          {value:230, name:'支付宝H5'},
+          {value:903, name:'网银'},
+        ]
+      });
+
+    </script>
+    <div class="mix">
+      <h2 class="title">最近7天平台交易</h2>
+      <div id="platform"></div>
+    </div>
+    <script type="text/javascript">
+       var platform=function (config){
+         // 基于准备好的dom，初始化echarts实例
+         var myChart = echarts.init(document.getElementById(config.id));
+
+         // 指定图表的配置项和数据
+         option = {
+           color:config.color,
+           tooltip : {
+             trigger: 'axis'
+           },
+           grid:{
+             y:config.y
+           },
+           legend: {
+             orient:'vertical',
+             x:'left',
+             textStyle:{
+               color:'#fff'
+             },
+
+             data:config.legend
+           },
+
+           calculable : true,
+
+           xAxis : [
+             {
+               type : 'category',
+               boundaryGap : true,
+               splitLine:{//网格线
+                 show:true,
+                 lineStyle:{
+                   type:'dashed',
+                   color:'#4a516a',
+                   width: 2
+                 }
+               },
+               axisLine : {    // 轴线
+                 show: true,
+                 lineStyle: {
+                   color: '#4a516a',
+                   type: 'dashed',
+                   width: 2
+                 }
+               },
+               axisLabel:{//主轴上文字的设置
+                 margin:20,
+                 textStyle:{
+                   color:'#fff',
+                   fontSize:10
+                 }
+               },
+               data :config.axisLine
+             }
+           ],
+           yAxis : [
+             {
+               type : 'value',
+               show:true,
+               splitNumber:config.splitNumber,
+               nameTextStyle:{ color:'#fff'},
+               max:config.max,
+               min:0,
+               name:config.name,
+               nameLocation:'end',
+               axisLine : {    // 轴线
+                 show: true,
+                 lineStyle: {
+                   color: '#4a516a',
+                   type: 'dashed',
+                   width: 2
+                 }
+               },
+               splitLine:{
+                 show:true,
+                 lineStyle:{
+                   type:'dashed',
+                   color:'#4a516a',
+                   width: 2
+                 }
+               },
+               axisLabel:{
+                 margin:20,
+                 textStyle:{
+                   color:'#fff',
+                   fontSize:10
+                 }
+               }
+             }
+           ],
+           series : [
+
+             {
+               name:'平台交易额',
+               type:'line',
+               zlevel:1,
+               itemStyle :{
+                 normal : {
+                   color:'#fff',
+                   lineStyle:{
+                     color:config.lineColor
+                   }
+                 }
+               },
+               data:config.lineData
+             },
+             {
+               name:'交易笔数',
+               zlevel:0,
+               type:'bar',
+               data:config.barData
+             }
+           ]
+         };
+         // 使用刚指定的配置项和数据显示图表。
+         myChart.setOption(option);
+       }
+       platform({
+         id:'platform',
+         y:'25%',
+         max:30000,
+         color:["#00f5fe"],
+         legend:[{ name:'平台交易额',icon:'image://images/zx.jpg'},{ name:'交易笔数',icon:"bar"}],
+         axisLine: ['7天','7天','7天','7天','7天'],
+         name:'单位：万',
+         lineData:[9000, 20500, 20500, 20500, 20500],
+         splitNumber:3,
+         lineColor:'#2e57ec',
+         barData:[3000,8000,9000,9000,9000]
+       });
+
+       var browser = {
+         versions: function () {
+           var u = navigator.userAgent, app = navigator.appVersion;
+
+           return {
+             trident: u.indexOf('Trident') > -1, //IE内核
+             presto: u.indexOf('Presto') > -1, //opera内核
+             webKit: u.indexOf('AppleWebKit') > -1, //苹果、谷歌内核
+             gecko: u.indexOf('Gecko') > -1 &&  u.indexOf('KHTML') == -1, //火狐内核
+             mobile: !!u.match(/AppleWebKit.*Mobile.*/) || !!u.match(/AppleWebKit/), //是否为移动终端
+             ios: !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/), //ios终端
+             android: u.indexOf('Android') > -1 || u.indexOf('Linux') > -1, //android终端或者uc浏览器
+             iPhone: u.indexOf('iPhone') > -1 || u.indexOf('Mac') > -1, //是否为iPhone或者QQHD浏览器
+             iPad: u.indexOf('iPad') > -1, //是否iPad
+             webApp: u.indexOf('Safari') == -1//是否web应该程序，没有头部与底部
+           };
+         }(),
+         language: (navigator.browserLanguage || navigator.language).toLowerCase()
+       };
+       var fontSize,width,height;
+       fontSize=$(window).width()/128*15*0.5;
+
+       $(window).resize(function(){
+         fontSize=$(window).width()/128*15*0.5;
+
+       });
+       $('.part2 .pie').height(fontSize*3.8);
+       if(!browser.versions.webKit){
+         $('.mix').css('margin-top',fontSize*0.1);
+           width=fontSize*7.5;
+           height=fontSize*5.55;
+         $('.main').css('padding-top','6rem');
+         $('.part1 .title').css({'font-size':'6rem', height:'15rem','line-height':'15rem',width:'70rem',padding:'0 5rem'});
+         $('.part1 .content').css('margin-top','4rem');
+         $('.part1 .today .total').css('margin-bottom','2.4rem');
+
+
+       }else{
+           width=fontSize*7.5;
+           height=fontSize*4.945;
+       }
+
+       $('.leftplat').height(height);
+       $('.leftplat').width(width);
+
+       var arr=[0];
+       var i=1;
+       platform({
+         id:'leftplat',
+         y:'20%',
+         max:8000,
+         color:["#2e57ec"],
+         legend:[{ name:'商户订单号1',icon:'bar'},{ name:'交易笔数',icon:"line"}],
+         axisLine:arr /*['2017-04-03','2017-04-03','2017-04-03']*/,
+         name:' ',
+         lineData:[1700, 4500, 300,500,600,1000,2000,5000,5215,6201],
+         splitNumber:5,
+         lineColor:'#00f5fe',
+         barData:[4500,7800,500,5200,1200,3601,7000,3000,5215,6201]
+       });
+
+       var t=setInterval(function(){
+         arr.push(i);
+         i++;
+
+         $('.leftplat').height(height);
+         $('.leftplat').width(width);
+
+
+         platform({
+           id:'leftplat',
+           y:'20%',
+           max:8000,
+           color:["#2e57ec"],
+           legend:[{ name:'商户订单号2',icon:'bar'},{ name:'交易笔数',icon:"line"}],
+           axisLine:arr /*['2017-04-03','2017-04-03','2017-04-03']*/,
+           name:' ',
+           lineData:[1700, 4500, 300,500,600,1000,2000,5000,5215,6201],
+           splitNumber:5,
+           lineColor:'#00f5fe',
+           barData:[4500,7800,500,5200,1200,3601,7000,3000,5215,6201]
+         });
+         if(i==10){
+           arr.length=0;
+           i=0;
+         }
+       },5000);
+
+    </script>
+  </div>
+</div>
+
+<div class="footer"></div>
+<script type="text/javascript">
+  if(!browser.versions.webKit){
+    $('.footer').css('height','5rem');
+  }
+</script>
+<script>
+  $(function(){
+    var font=$('#numTxt');
+
+    //调用方式一：NumberGrow(font)
+    // 调用方式二：// NumberGrow(font,{time:10,num:1001540});
+    setInterval(function(){
+      NumberGrow(font);
+    },3000);
+  });
+  var NumberGrow=function (element, options) {
+    options = options || {};
+    var $this = $(element),
+        time = (options.time || $this.data('time')) * 1000,
+        num = options.num || $this.data('value'),
+        startTime = +new Date(),
+        curTime,
+        timer;
+    timer = setInterval(function () {
+      curTime = +new Date();
+      var timeSpan = curTime - startTime,
+          curValue = num * (timeSpan / time);//比例计算
+      if(timeSpan >= time) {
+        curValue = num;
+        clearInterval(timer);
+      } else {
+        curValue = curValue.toFixed(2);
+      }
+      $this.text(curValue);
+    }, 16);
+  };
+</script>
+</body>
+</html>

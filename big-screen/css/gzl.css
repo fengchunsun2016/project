@@ -1,0 +1,82 @@
+@charset "utf-8";
+/* CSS Document */
+/* login */
+::-webkit-input-placeholder { /* WebKit browsers */
+    color:rgba(255,255,255,0.7);
+    font-size: 1.6rem;
+}
+:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+    color:rgba(255,255,255,0.7);
+    font-size: 1.6rem;
+
+}
+::-moz-placeholder { /* Mozilla Firefox 19+ */
+    color:rgba(255,255,255,0.7);
+    font-size: 1.6rem;
+    opacity:1;
+}
+:-ms-input-placeholder { /* Internet Explorer 10+ */
+    color:rgba(255,255,255,0.7);!important;
+    font-size: 1.6rem; !important;
+}
+.login-wrap{ padding-top:8rem; }
+.login-wrap .title{ font-size: 9rem; color:#fff; font-weight: bold; text-align: center;letter-spacing:3.3rem;}
+.login-form{ margin:7.5rem auto 0;   width: 37.9rem;}
+.login-form div{ height: 3rem; border: 1px solid #1b688e; margin-bottom: 0.9rem;}
+.login-form input{ height:100%; width: 32.16rem; padding: 0 0.9rem; float: left; background: #1f7acb; border: 0;  font-size: 1.6rem;
+    color:rgba(255,255,255,0.7);  box-shadow: inset 0 0 11px rgba(28,26,27,0.5);}
+
+.login-form span{ float:left;height: 100%;}
+.login-form .name{ background:#fff  url("../images/head.png") no-repeat center center; background-size: 1.4rem 1.8rem;}
+.login-form .psd{ background:#fff  url("../images/psd.png") no-repeat center center; background-size: 1.4rem 1.8rem;}
+.login-form .name ,.login-form .psd{ width: 3.8rem; height: 100%;   }
+
+/* index */
+.main{ padding-top: 2rem;}
+.part1{ width: 45%;}
+.part1 .title{ font-size: 8.9rem; letter-spacing: 0.7rem;  color: #fff; border-top-right-radius: 15px; border-bottom-right-radius: 15px; background: #2e57ec; width: 35rem; text-indent: 2.3rem; height: 5.3rem; line-height: 5.3rem;}
+.part1 .content{ padding-left: 8.14583%; margin-top: 1.7rem;}
+.part1 .today{ color: #fff;}
+.part1 .plat-time{ position: relative; margin-top:8rem;}
+.part1 .plat-today{    font-size: 4.5rem; padding-left: 0.5rem;    color: #fff; margin-top:5rem;  position: absolute; left: 0; top: 0.25rem; margin-top:0; font-size: 4rem;}
+.part1 .today .total{ font-size: 5.5rem ; color: #fff; margin-bottom: 1.2rem; }
+.part1 .today .sum{  font-size:5.5rem; margin-bottom: 0rem; display:inline-block;}
+.part1 .plant-sum{ margin-bottom: 1.1rem; font-size: 5.5rem; color: #fff; }
+
+.part1 .leftplat{ margin-top: 1rem; position: relative; }
+
+
+.part2{ width: 55%;}
+.part2 .title{ font-size: 4rem; color: #fff; margin-top: 2.3rem;}
+.part2 .box{ font-size: 3.1rem; color: #fff; position:relative;}
+.part2 .box .danwei{ position: absolute;right:20rem; top: 5rem;}
+.part2 .pie{ height: 33rem; width: 100%; margin-top: 3.6rem;  display: -webkit-box; display: -moz-box; display:-webkit-flex; display: -ms-flexbox; display:flex;}
+.part2 .mix{ width: 100%; position: relative;}
+.part2 .mix .title{ position: absolute; left: 0; top: 0.25rem; margin-top:0; font-size: 4rem;}
+.part2 .mix #platform{ height:23.8rem; width: 100%;}
+
+
+
+.footer{
+    background: -webkit-linear-gradient(left ,#07c0bb 0%, #2768e3 100%);
+    background: -o-linear-gradient(bottom ,#07c0bb 0%, #2768e3 100%);
+    background: -moz-linear-gradient(bottom ,#07c0bb 0%, #2768e3 100%);
+    background: linear-gradient( bottom , #07c0bb 0%, #2768e3 100%);
+    position: fixed; left: 0; bottom: 0; width: 100%;height:1.5rem;
+    filter: progid:DXImageTransform.Microsoft.gradient(startcolorstr='#07c0bb',endcolorstr='#2768e3',gradientType=1);
+
+}
+.part1 .today .total{ font-size:6.8rem;}
+.part1 .today .sum{  font-size:6.8rem; }
+.part1 .plant-sum{ font-size:6.8rem; }
+.part2 .box .danwei{     position: absolute; right: 5rem;    top: 3rem;font-size: 4rem; }
+.part1 .plat-time{margin-top:8rem;}
+.part1 .plat-dd{
+	position: absolute; left:4rem;    bottom: 2.1rem;
+	color:#ffffff;
+	font-size:3.9rem;
+}
+
+.part1 .plant-sum .num{ color: #00f5fe; margin-left: 1rem;}
+
+

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" style="color: red;">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no,minimal-ui" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no, email=no"/>
+  <link type="text/css" href="./css/phone-gzl.css" rel="stylesheet" />
+  <script src="./js/zepto.min.js" type="text/javascript"></script>
+  <script type="text/javascript" src="./js/common.js"></script>
+  <title>login</title>
+</head>
+<body>
+<div class="login-wrap">
+  <div class="title">聚融通生态数据平台</div>
+  <div class="form-wrap">
+    <div class="item box "><span class="head-icon box-c box-item"></span><input class="name box-c box-item" type="text" placeholder="用户名"></div>
+    <div class="item box"><span class="pass-icon  box-c box-item"></span><input class="pass box-c box-item" type="text" placeholder="用户明码"></div>
+  </div>
+</div>
+<script>
+  $(document).ready(function(){
+      var height=$(window).height();
+      $('.login-wrap').css('height',height);
+  });
+</script>
+</body>
+</html>
