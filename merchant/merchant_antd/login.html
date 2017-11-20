@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <link href="favicon.ico" type="image/x-icon" rel=icon>
+  <link rel="stylesheet" href="css/antd.min.css">
+  <script src="js/react.production.min.js"></script>
+  <script src="js/react-dom.production.min.js"></script>
+  <script src="js/antd.min.js"></script>
+  <script src="js/browser.min.js"></script>
+  <style>
+    .pic-login{
+      display:block;
+      border:none;
+      width:100%;
+      /**/
+      height:calc(100vh - 140px);
+    }
+  </style>
+</head>
+<body>
+<div id="app"></div>
+<script type="text/babel">
+  const {  Icon,  Row, Col, Card, Form, Input, Button, Layout} = antd;
+  const { Header, Footer, Content } = Layout;
+  const FormItem = Form.Item;
+
+
+  class MyQuery extends React.Component{
+    constructor(){
+      super();
+      this.state = {
+
+      }
+      this.handleSubmit = this.handleSubmit.bind(this);
+    }
+    handleSubmit(e){
+      e.preventDefault();
+      this.props.form.validateFields((err, values) => {
+        if (!err) {
+          console.log('提交的数据: ', values);
+          location.href='./index.html'
+        }
+      });
+    }
+
+    render(){
+      const { getFieldDecorator } = this.props.form;
+      return(
+        <Form onSubmit={this.handleSubmit} className="login-form">
+          <FormItem>
+            {getFieldDecorator('userName', {
+              rules: [{ required: true, message: '请输入商户号' }],
+            })(
+              <Input
+                prefix={<Icon type="user" />}
+                placeholder="请输入商户号"
+                style={{minWidth:'200px',maxWidth:'300px',fontSize: 13}} />
+            )}
+          </FormItem>
+          <FormItem>
+            {getFieldDecorator('password', {
+              rules: [{ required: true, message: '请输入密码' }],
+            })(
+              <Input
+                prefix={<Icon type="lock" />}
+                type="password"
+                placeholder="请输入密码"
+                style={{minWidth:'200px',maxWidth:'300px', fontSize: 14}} />
+            )}
+          </FormItem>
+          <FormItem>
+            {getFieldDecorator('verCode', {
+              rules: [{ required: true, message: '请输入验证码' }],
+            })(
+              <Input placeholder="验证码" style={{width:'100px'}}/>
+            )}
+          </FormItem>
+          <FormItem>
+            <Button type="primary" htmlType="submit" className="login-form-button">
+              登录
+            </Button>
+          </FormItem>
+        </Form>
+      )
+    }
+  }
+  const Query = Form.create()(MyQuery);
+
+  class Login extends React.Component{
+    render(){
+
+      return(
+      <Layout>
+        <Header style={{backgroundColor:'#ececec'}}>
+          <Row>
+            <Col span={16} offset={2}>
+              <img src="./images/logo.png" alt="" style={{position:'relative',top:'7px',width:'160px',height:'50px',}}/>
+            </Col>
+            <Col offset={6}>
+              <Icon type="phone" />
+              &nbsp;
+              <span>服务热线:&nbsp;</span>
+              <span>400-160-5001</span>
+            </Col>
+          </Row>
+        </Header>
+        <Content style={{padding:'5px 80px', backgroundColor:'#fff'}}>
+          <Row type="flex" justify="center" align="middle">
+            <Col span={15} >
+              <img src="./images/merchant-login.jpg" alt="登录背景图" className="pic-login" />
+            </Col>
+
+            <Col span={9} style={{padding:'0 50px'}}>
+              <Card style={{minWidth:'260px',maxWidth:'360px'}}>
+                <div style={{fontSize:'24px',fontWeight:'600',height:'60px',lineHeight:'60px',textAlign:'center',color:'#000'}}>商户服务平台</div>
+                <Query />
+              </Card>
+            </Col>
+          </Row>
+        </Content>
+        <Footer style={{ textAlign: 'center' }}>Copyright &copy; 2017 北京亿联通付科技有限公司</Footer>
+      </Layout>
+      )
+    }
+  }
+
+  ReactDOM.render( <Login /> , document.getElementById('app'));
+
+
+</script>
+</body>
+</html>

@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="favicon.ico" type="image/x-icon" rel=icon>
+    <link rel="stylesheet" href="css/antd.min.css">
+    <link rel="stylesheet" href="css/reset.css">
+    <script src="js/react.production.min.js"></script>
+    <script src="js/react-dom.production.min.js"></script>
+    <script src="js/antd.min.js"></script>
+    <script src="js/browser.min.js"></script>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script type="text/babel">
+      const { Layout, Menu, Icon, Badge, Row, Col, Dropdown, Modal, Button, Form, Input} = antd;
+      const FormItem = Form.Item;
+      const { Header, Footer, Sider } = Layout;
+
+      const styles = {
+        arrow:{
+          position:'absolute',
+          top:17,
+          right:-13,
+          fontSize:14,
+          color:'#ececec'
+        },
+        header : {
+          background : '#fff',
+          paddingRight : 40,
+          // textAlign:'center',
+          fontSize : 16,
+          borderBottom:'1px solid #ccc'
+        },
+        headItem : {
+          margin : '0 20px'
+        },
+        menuText : {
+          marginLeft : 6,
+          color : '#000'
+        },
+        personalIcon : {
+          fontSize : 14,
+          marginRight : 5
+        }
+      }
+
+      //布局左侧菜单
+      class MyMenu extends React.Component{
+
+        constructor(props){
+          super(props);
+          this.state = {
+            selectedKey: './home.html',
+            dataMenu: [],
+            dataNews:{}
+          }
+          this.onSelect = this.onSelect.bind(this);
+        }
+
+        componentDidMount(){
+          fetch('http://www.easy-mock.com/mock/59fbf08b3e1c5652e5202c5e/merchant/nav')
+            .then(res=>res.json())
+            .then(data=>{
+              //console.log(data,'menu');
+              this.setState({
+                dataMenu:data.list
+              })
+          })
+        }
+
+        onSelect({ item, key }){
+          window.frames['mainFrame'].src = key;
+          this.setState({
+            selectedKey:key
+          })
+        }
+        render(){
+          const {dataMenu} = this.state;
+          return(
+            <Menu theme="dark" mode="inline" defaultSelectedKeys={['./home.html']} onSelect={this.onSelect} >
+            {
+              dataMenu.map((item,index)=> {
+                return(
+                  <Menu.Item key={item.path} style={{height: '46px', lineHeight: '46px', fontSize:'16px'}} >
+                  <Icon type={item.icon} />
+                  <span className="nav-text">{item.title}</span>
+                  {
+                    this.state.selectedKey==item.path?<Icon type="caret-left" style={styles.arrow} />:''
+                  }
+                  </Menu.Item>
+                )
+              })
+            }
+
+
+            </Menu>
+        )
+        }
+      }
+
+      //修改交易密码form框
+      class MyDealQuery extends React.Component{
+        constructor(){
+          super();
+          this.state = {
+
+          }
+          this.handleSubmit = this.handleSubmit.bind(this);
+        }
+        handleSubmit(e){
+          const { handleOk } = this.props;
+          e.preventDefault();
+          this.props.form.validateFields((err, values) => {
+            if (!err) {
+              console.log('提交的数据: ', values);
+              handleOk();
+            }
+          });
+        }
+
+        render(){
+          const { form:{getFieldDecorator}, handleOk, handleCancel } = this.props;
+          return(
+            <Form onSubmit={this.handleSubmit} className="login-form">
+              <FormItem>
+                {getFieldDecorator('oldPassword', {
+                  rules: [{ required: true, message: '请输入旧密码' }],
+                })(
+                  <Input
+                    type="password"
+                    prefix={<Icon type="lock" />}
+                    placeholder="请输入旧密码"
+                    style={{width:250}} />
+                )}
+              </FormItem>
+              <FormItem>
+                {getFieldDecorator('newPasswordOne', {
+                  rules: [{ required: true, message: '请输入新密码' }],
+                })(
+                  <Input
+                    prefix={<Icon type="lock" />}
+                    type="password"
+                    placeholder="请输入新密码"
+                    style={{width:250}} />
+                )}
+              </FormItem>
+              <FormItem>
+                {getFieldDecorator('newPasswordTwo', {
+                  rules: [{ required: true, message: '请再次输入新密码' }],
+                })(
+                  <Input
+                    prefix={<Icon type="lock" />}
+                    placeholder="请再次输入新密码"
+                    type="password"
+                    style={{width:250}} />
+                )}
+              </FormItem>
+              <FormItem>
+                <Button type="default" className="login-form-button" style={{margin:'0 20px 0 40px'}} onClick={handleCancel}>
+                  取消
+                </Button>
+                <Button type="primary" htmlType="submit" className="login-form-button" >
+                  提交
+                </Button>
+              </FormItem>
+            </Form>
+          )
+        }
+      }
+      const DealQuery = Form.create()(MyDealQuery);
+      //布局头部
+      class MyHeader extends React.Component{
+
+        constructor(props){
+          super(props);
+          this.state = {
+            dataNews:{},
+            visible:false,
+            loading:false
+          }
+          this.onClick = this.onClick.bind(this);
+          this.showModal = this.showModal.bind(this);
+          this.handleOk = this.handleOk.bind(this);
+          this.handleCancel = this.handleCancel.bind(this);
+        }
+        componentDidMount(){
+          this.timer = setInterval(()=>{
+            fetch('http://www.easy-mock.com/mock/59fbf08b3e1c5652e5202c5e/merchant/news')
+              .then(res=>res.json())
+              .then(data=>{
+               // console.log(data,'news');
+                this.setState({
+                  dataNews:data
+                })
+              })
+          },10000)
+
+        }
+
+        componentWillUnMount(){
+          clearInterval(this.timer);
+        }
+
+        onClick({ item, key, keyPath }){
+          //console.log( item, key, keyPath,'aaaaaaaaaaaaa' )
+          if(key==3){
+            location.href='./login.html'
+          }else if(key==2){
+            this.showModal();
+          }else if(key==1){
+            this.showModal();
+          }
+        }
+
+        showModal(){
+          this.setState({
+            visible: true,
+          });
+        }
+        handleOk(){
+          this.setState({ loading: true });
+          setTimeout(() => {
+            this.setState({ loading: false, visible: false });
+          }, 3000);
+        }
+        handleCancel(){
+          this.setState({ visible: false });
+        }
+
+        render(){
+          const { dataNews, visible, loading } = this.state;
+
+          const menu = (
+            <Menu onClick={this.onClick}>
+              <Menu.Item key="1">
+                <Icon type="setting" style={styles.personalIcon} /> 修改登录密码
+              </Menu.Item>
+              <Menu.Item key="2">
+                <Icon type="setting" style={styles.personalIcon} /> 修改交易密码
+              </Menu.Item>
+              <Menu.Item key="3">
+                <Icon type="logout" style={styles.personalIcon} />退出登录
+              </Menu.Item>
+            </Menu>
+          );
+          return(
+            <Header style={styles.header}>
+              <Row>
+                <Col span={10}>
+                  欢迎来到商户服务平台！
+                </Col>
+                <Col span={14}>
+                <Row type="flex" justify="end">
+                  <Col style={styles.headItem}>
+                  <a role="button" style={{ marginLeft : 10 }}>
+                    <Badge count={dataNews.message}>
+                      <Icon type="question-circle" />
+                      <span style={styles.menuText}>
+                        工单
+                      </span>
+                    </Badge>
+                  </a>
+                  </Col>
+                  <Col style={styles.headItem}>
+                  <a role="button" style={{ marginLeft : 10 }}>
+                    <Badge count={dataNews.message}>
+                      <Icon type="message" />
+                      <span style={styles.menuText}>
+                        消息
+                      </span>
+                    </Badge>
+                  </a>
+                  </Col>
+                  <Col style={styles.headItem}>
+                  <Dropdown overlay={menu} placement="bottomLeft">
+                    <a className="ant-dropdown-link" style={{...styles.menuText,fontSize:16}}>
+                      海底捞 <Icon type="down" />
+                    </a>
+                  </Dropdown>
+                  </Col>
+                </Row>
+                </Col>
+              </Row>
+
+              <Modal
+                visible={visible}
+                title="修改交易密码"
+                onOk={this.handleOk}
+                onCancel={this.handleCancel}
+                footer={null}
+                maskClosable={false}
+                bodyStyle={{display:'flex',justifyContent:'center',AlignItems:'center'}}
+              >
+                <DealQuery handleOk={this.handleOk} handleCancel={this.handleCancel} />
+              </Modal>
+            </Header>
+          )
+        }
+      }
+      //整体布局
+      class MyLayout extends React.Component{
+
+        render(){
+          return(
+            <Layout>
+              <Sider style={{ overflow: 'auto', height: '100vh', position: 'fixed', left: 0 }}>
+                <div className="logo" style={{margin:'30px'}}>
+                  <img src="./images/merchant-logo.png" alt="商户服务平台logo" style={{width:'100%',height:'100%'}} />
+                </div>
+                <MyMenu />
+              </Sider>
+              <Layout style={{ marginLeft: 200 }}>
+                <MyHeader />
+
+                <iframe id="mainFrame" src="./home.html"></iframe>
+                <Footer style={{ textAlign: 'center' }}>
+                  Copyright &copy; 2017 北京亿联通付科技有限公司
+                </Footer>
+              </Layout>
+            </Layout>
+          )
+        }
+      }
+      ReactDOM.render( <MyLayout/> , document.getElementById('app'));
+    </script>
+  </body>
+</html>

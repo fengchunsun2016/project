@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+
+  <link href="favicon.ico" type="image/x-icon" rel=icon>
+  <link rel="stylesheet" href="css/antd.min.css">
+  <link rel="stylesheet" href="css/reset.css">
+  <script src="js/react.production.min.js"></script>
+  <script src="js/react-dom.production.min.js"></script>
+  <script src="js/antd.min.js"></script>
+  <script src="js/browser.min.js"></script>
+  <style>
+    body {
+      background-color: #ececec;
+    }
+  </style>
+</head>
+<body>
+<div id="app"></div>
+<script type="text/babel">
+
+  const { Layout, Collapse, Button, Row, Col } = antd;
+  const { Content } = Layout;
+  const Panel = Collapse.Panel;
+
+  function callback(key) {
+    console.log(key);
+  }
+
+
+  class SettlementDetail extends React.Component {
+    constructor() {
+      super();
+      this.state = {
+        dataDetail : {}
+      }
+    }
+
+    return() {
+      window.history.go(-1);
+    }
+
+    componentDidMount() {
+      fetch('http://www.easy-mock.com/mock/5959bfe39adc231f356fa706/channel-mer-web/settlement/list')
+        .then(res=>res.json())
+        .then(data=> {
+          console.log(data, 'easy');
+          /*this.setState({
+
+           })*/
+        })
+    }
+
+    render() {
+      return (
+        <Content style={{ margin : '15px', height : '100vh-94px', minHeight : '400px' }}>
+          <div>
+            <Collapse defaultActiveKey={['1', '2', '3']} onChange={callback} style={{ lineHeight : '50px', fontSize : '16px' }}>
+              <Panel header="订单信息" key="1">
+                <Row>
+                  <Col span={6}>
+                    <span>代付订单号：</span>
+                    <span>{}</span>
+                  </Col>
+                  <Col span={6}>
+                    <span>来源订单号：</span>
+                    <span>{}</span>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col span={6}>
+                    <span>商户号：</span>
+                    <span>{}</span>
+                  </Col>
+                  <Col span={6}>
+                    <span>商户名称：</span>
+                    <span>{}</span>
+                  </Col>
+                </Row>
+              </Panel>
+              <Panel header="基本信息" key="2">
+                <Col span={6}>
+                  <span>开户人姓名：</span>
+                  <span>{}</span>
+                </Col>
+                <Col span={6}>
+                  <span>开户省：</span>
+                  <span>{}</span>
+                </Col>
+                <Col span={6}>
+                  <span>开户城市：</span>
+                  <span>{}</span>
+                </Col>
+                <Col span={6}>
+                  <span>开户银行：</span>
+                  <span>{}</span>
+                </Col>
+
+                <Col span={6}>
+                  <span>银行账户：</span>
+                  <span>{}</span>
+                </Col>
+                <Col span={6}>
+                  <span>银联号：</span>
+                  <span>{}</span>
+                </Col>
+                <Col span={6}>
+                  <span>代付种类：</span>
+                  <span>{}</span>
+                </Col>
+                <Col span={6}>
+                  <span>代付金额：</span>
+                  <span>{}</span>
+                </Col>
+
+                <Col span={6}>
+                  <span>状态：</span>
+                  <span>{}</span>
+                </Col>
+                <Col span={6}>
+                  <span>到账金额：</span>
+                  <span>{}</span>
+                </Col>
+                <Col span={10}>
+                  <span>商户手续费：</span>
+                  <span>{}</span>
+                </Col>
+
+
+                <Col span={6}>
+                  <span>申请时间：</span>
+                  <span>{}</span>
+                </Col>
+                <Col span={6}>
+                  <span>创建时间：</span>
+                  <span>{}</span>
+                </Col>
+              </Panel>
+              <Panel header="其他" key="3">
+                <Row>
+                  <Col>
+                    <span>备注：</span>
+                    <span>{}</span>
+                  </Col>
+                </Row>
+              </Panel>
+            </Collapse>
+            <div style={{ padding : '50px 0', textAlign : 'center', backgroundColor : '#fff' }}>
+              <Button type="primary" onClick={this.return}>返回</Button>
+            </div>
+          </div>
+
+        </Content>
+      )
+    }
+  }
+  ReactDOM.render(<SettlementDetail />, document.getElementById('app'));
+
+
+</script>
+</body>
+</html>

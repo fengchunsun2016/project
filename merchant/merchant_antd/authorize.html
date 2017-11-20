@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+
+  <link href="favicon.ico" type="image/x-icon" rel=icon>
+  <link rel="stylesheet" href="css/antd.min.css">
+  <link rel="stylesheet" href="css/reset.css">
+  <script src="js/react.production.min.js"></script>
+  <script src="js/react-dom.production.min.js"></script>
+  <script src="js/antd.min.js"></script>
+  <script src="js/browser.min.js"></script>
+  <style>
+    body{
+      background-color: #ececec;
+    }
+    .titleName{
+      font-size:16px;
+      line-height:40px;
+    }
+    .titleName span{
+      display:inline-block;
+      line-height:24px;
+    }
+    .titleName .icon{
+      position:relative;
+      top:1px;
+      margin:0 5px;
+      width:4px;
+      height:14px;
+      border-radius: 2px;
+      background-color:#108ee9;
+    }
+  </style>
+</head>
+<body>
+<div id="test"></div>
+<script type="text/babel">
+
+  const { Layout,Card, Row, Col, Collapse } = antd;
+  const { Content } = Layout;
+  const Panel = Collapse.Panel;
+
+  function callback(key) {
+    console.log(key);
+  }
+
+  class Authorize extends React.Component{
+    constructor(){
+      super();
+      this.state = {
+        data:{}
+      }
+    }
+    componentDidMount(){
+      fetch('http://www.easy-mock.com/mock/59fbf08b3e1c5652e5202c5e/merchant/terminal/detail')
+        .then(res=>res.json())
+        .then(data=> {
+          console.log(data, 'terminal/detail');
+          this.setState({
+           data:data.data
+          })
+        })
+    }
+    render(){
+      return(
+        <Content style={{margin:'15px',height:'100vh-94px',minHeight:'400px'}}>
+
+          <Card style={{margin:'15px 0'}}>
+            <div className="titleName">
+              <span className="icon"></span>
+              <span>基本信息</span>
+            </div>
+            <Row style={{marginLeft:'20px'}}>
+              <Col span={8}><span>商户号：</span><span>{}</span></Col>
+              <Col span={8}><span>商户名称：</span><span>{}</span></Col>
+            </Row>
+          </Card>
+
+          <Card>
+            <div className="titleName">
+              <span className="icon"></span>
+              <span>授权信息</span>
+            </div>
+            <Collapse defaultActiveKey={['1','2']} onChange={callback}>
+              <Panel header="银行卡" key="1">
+                <Row>
+                  <Col span={6}><span>银行卡收单(借记卡)：</span><span>{}</span></Col>
+                  <Col span={6}><span>费率：</span><span>{}</span></Col>
+                  <Col span={6}><span>手续费封顶：</span><span>{}</span></Col>
+                  <Col span={6}><span>手续费保底：</span><span>{}</span></Col>
+                </Row>
+              </Panel>
+              <Panel header="微信" key="2">
+                <Row>
+                  <Col span={6}><span>微信公众号支付：</span><span>{}</span></Col>
+                  <Col span={6}><span>费率：</span><span>{}</span></Col>
+                  <Col span={6}><span>手续费封顶：</span><span>{}</span></Col>
+                  <Col span={6}><span>手续费保底：</span><span>{}</span></Col>
+                </Row>
+              </Panel>
+            </Collapse>
+          </Card>
+        </Content>
+      )
+    }
+  }
+  ReactDOM.render( <Authorize /> , document.getElementById('test'));
+</script>
+</body>
+</html>
